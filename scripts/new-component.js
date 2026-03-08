@@ -7,6 +7,7 @@
  * Usage:
  *   node scripts/new-component.js product-badge
  *   node scripts/new-component.js cart-drawer --vue
+ *   node scripts/new-component.js heading --type block
  *   pnpm new-component product-badge
  */
 
@@ -15,10 +16,11 @@ import { resolve } from 'path'
 
 const args = process.argv.slice(2)
 const isVue = args.includes('--vue')
-const name = args.find((a) => !a.startsWith('--'))
+const isBlock = args.includes('--type') && args[args.indexOf('--type') + 1] === 'block'
+const name = args.find((a) => !a.startsWith('--') && args[args.indexOf(a) - 1] !== '--type')
 
 if (!name) {
-  console.error('Usage: pnpm new-component [component-name] [--vue]')
+  console.error('Usage: pnpm new-component [component-name] [--vue] [--type block]')
   process.exit(1)
 }
 
@@ -30,23 +32,100 @@ if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(name)) {
 }
 
 const ROOT = process.cwd()
-const componentDir = resolve(ROOT, 'src/components', name)
 
-if (existsSync(componentDir)) {
-  console.error(`Component already exists: src/components/${name}/`)
-  process.exit(1)
-}
-
-// Derive PascalCase from kebab-case for Vue component name
+// Derive PascalCase from kebab-case
 const pascalName = name
   .split('-')
   .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
   .join('')
 
-mkdirSync(componentDir, { recursive: true })
+const humanName = pascalName.replace(/([A-Z])/g, ' $1').trim()
 
-// --- index.liquid ---
-const liquidContent = `{% liquid
+if (isBlock) {
+  scaffoldBlock()
+} else {
+  scaffoldSection()
+}
+
+function scaffoldBlock() {
+  const blockDir = resolve(ROOT, 'src/blocks', name)
+
+  if (existsSync(blockDir)) {
+    console.error(`Block already exists: src/blocks/${name}/`)
+    process.exit(1)
+  }
+
+  mkdirSync(blockDir, { recursive: true })
+
+  // --- index.liquid ---
+  const liquidContent = `<div class="grove-${name}" {{ block.shopify_attributes }}>
+  {%- comment -%} Block content here {%- endcomment -%}
+</div>
+
+<!-- SCHEMA_INJECT -->
+`
+  writeFileSync(resolve(blockDir, 'index.liquid'), liquidContent)
+
+  // --- [name].schema.json ---
+  const schemaContent = {
+    _version: '1.0.0',
+    name: humanName,
+    tag: null,
+    settings: [],
+  }
+  writeFileSync(resolve(blockDir, `${name}.schema.json`), JSON.stringify(schemaContent, null, 2))
+
+  // --- [name].scss ---
+  const scssContent = `// ${humanName} Block
+// Scoped nested BEM styles — all values via design tokens
+
+.grove-${name} {
+  // Add block styles here
+}
+`
+  writeFileSync(resolve(blockDir, `${name}.scss`), scssContent)
+
+  // --- Update blocks registry ---
+  const registryPath = resolve(ROOT, 'src/blocks/registry.json')
+  let registry = {}
+  if (existsSync(registryPath)) {
+    registry = JSON.parse(readFileSync(registryPath, 'utf-8'))
+  }
+
+  registry[name] = {
+    type: 'block',
+    status: 'draft',
+    schemaVersion: '1.0.0',
+    reusableIn: [],
+    tokens: [],
+  }
+
+  writeFileSync(registryPath, JSON.stringify(registry, null, 2))
+
+  console.log(`\n✓ Block "${name}" scaffolded at src/blocks/${name}/\n`)
+  console.log('  Files created:')
+  console.log(`    index.liquid`)
+  console.log(`    ${name}.schema.json`)
+  console.log(`    ${name}.scss`)
+  console.log(`\n  src/blocks/registry.json updated`)
+  console.log(`\nNext steps:`)
+  console.log(`  1. Edit src/blocks/${name}/ to implement the block`)
+  console.log(`  2. Run: pnpm validate-schemas`)
+  console.log(`  3. Run: pnpm build\n`)
+}
+
+function scaffoldSection() {
+  const componentDir = resolve(ROOT, 'src/components', name)
+
+  if (existsSync(componentDir)) {
+    console.error(`Component already exists: src/components/${name}/`)
+    process.exit(1)
+  }
+
+  mkdirSync(componentDir, { recursive: true })
+
+  // --- index.liquid ---
+  const liquidContent = `{% liquid
   assign placeholder = true
 %}
 
@@ -59,36 +138,36 @@ const liquidContent = `{% liquid
 
 <!-- SCHEMA_INJECT -->
 `
-writeFileSync(resolve(componentDir, 'index.liquid'), liquidContent)
+  writeFileSync(resolve(componentDir, 'index.liquid'), liquidContent)
 
-// --- [name].schema.json ---
-const schemaContent = {
-  _version: '1.0.0',
-  name: pascalName.replace(/([A-Z])/g, ' $1').trim(),
-  tag: 'section',
-  settings: [
-    {
-      type: 'header',
-      content: 'Content',
-    },
-    {
-      type: 'inline_richtext',
-      id: 'heading',
-      label: 'Heading',
-      default: pascalName.replace(/([A-Z])/g, ' $1').trim(),
-    },
-  ],
-  presets: [
-    {
-      name: pascalName.replace(/([A-Z])/g, ' $1').trim(),
-      settings: {},
-    },
-  ],
-}
-writeFileSync(resolve(componentDir, `${name}.schema.json`), JSON.stringify(schemaContent, null, 2))
+  // --- [name].schema.json ---
+  const schemaContent = {
+    _version: '1.0.0',
+    name: humanName,
+    tag: 'section',
+    settings: [
+      {
+        type: 'header',
+        content: 'Content',
+      },
+      {
+        type: 'inline_richtext',
+        id: 'heading',
+        label: 'Heading',
+        default: humanName,
+      },
+    ],
+    presets: [
+      {
+        name: humanName,
+        settings: {},
+      },
+    ],
+  }
+  writeFileSync(resolve(componentDir, `${name}.schema.json`), JSON.stringify(schemaContent, null, 2))
 
-// --- [name].scss ---
-const scssContent = `// ${pascalName.replace(/([A-Z])/g, ' $1').trim()} Component
+  // --- [name].scss ---
+  const scssContent = `// ${humanName} Component
 // Scoped nested BEM styles — all values via design tokens
 
 .${name} {
@@ -99,11 +178,11 @@ const scssContent = `// ${pascalName.replace(/([A-Z])/g, ' $1').trim()} Componen
   }
 }
 `
-writeFileSync(resolve(componentDir, `${name}.scss`), scssContent)
+  writeFileSync(resolve(componentDir, `${name}.scss`), scssContent)
 
-// --- [ComponentName].vue OR [name].js ---
-if (isVue) {
-  const vueContent = `<template>
+  // --- [ComponentName].vue OR [name].js ---
+  if (isVue) {
+    const vueContent = `<template>
   <div class="${name}">
     <!-- ${pascalName} Vue island -->
     <slot />
@@ -119,9 +198,9 @@ if (isVue) {
 /* Scoped styles — prefer global BEM SCSS in ${name}.scss */
 </style>
 `
-  writeFileSync(resolve(componentDir, `${pascalName}.vue`), vueContent)
-} else {
-  const jsContent = `/**
+    writeFileSync(resolve(componentDir, `${pascalName}.vue`), vueContent)
+  } else {
+    const jsContent = `/**
  * ${pascalName} component — Vanilla ES module
  */
 
@@ -143,11 +222,11 @@ document.querySelectorAll('.${name}').forEach((el) => {
 
 export { ${pascalName}Section }
 `
-  writeFileSync(resolve(componentDir, `${name}.js`), jsContent)
-}
+    writeFileSync(resolve(componentDir, `${name}.js`), jsContent)
+  }
 
-// --- [name].md ---
-const mdContent = `# ${pascalName.replace(/([A-Z])/g, ' $1').trim()}
+  // --- [name].md ---
+  const mdContent = `# ${humanName}
 
 ## Purpose
 
@@ -185,41 +264,41 @@ TODO: Describe what this component does, where it is used, and what problem it s
 - **Tokens:** TODO: list tokens used
 - **JS / Vue:** ${isVue ? 'Vue 3 island' : 'Vanilla ES module'}
 `
-writeFileSync(resolve(componentDir, `${name}.md`), mdContent)
+  writeFileSync(resolve(componentDir, `${name}.md`), mdContent)
 
-// --- Update registry.json ---
-const registryPath = resolve(ROOT, 'src/components/registry.json')
-let registry = {}
-if (existsSync(registryPath)) {
-  registry = JSON.parse(readFileSync(registryPath, 'utf-8'))
+  // --- Update registry.json ---
+  const registryPath = resolve(ROOT, 'src/components/registry.json')
+  let registry = {}
+  if (existsSync(registryPath)) {
+    registry = JSON.parse(readFileSync(registryPath, 'utf-8'))
+  }
+
+  registry[name] = {
+    type: 'section',
+    js: isVue ? 'vue' : 'vanilla',
+    interactive: isVue,
+    vue: isVue,
+    status: 'draft',
+    schemaVersion: '1.0.0',
+    usedIn: [],
+    tokens: [],
+    privateSnippets: [],
+    sharedSnippets: [],
+  }
+
+  writeFileSync(registryPath, JSON.stringify(registry, null, 2))
+
+  console.log(`\n✓ Component "${name}" scaffolded at src/components/${name}/\n`)
+  console.log('  Files created:')
+  console.log(`    index.liquid`)
+  console.log(`    ${name}.schema.json`)
+  console.log(`    ${name}.scss`)
+  console.log(`    ${isVue ? `${pascalName}.vue` : `${name}.js`}`)
+  console.log(`    ${name}.md`)
+  console.log(`\n  registry.json updated`)
+  console.log(`\nNext steps:`)
+  console.log(`  1. Edit src/components/${name}/ to implement the component`)
+  console.log(`  2. Run: pnpm validate-schemas`)
+  console.log(`  3. Run: pnpm render ${name} --fixture product`)
+  console.log(`  4. Run: pnpm lint\n`)
 }
-
-registry[name] = {
-  type: 'section',
-  js: isVue ? 'vue' : 'vanilla',
-  interactive: isVue,
-  vue: isVue,
-  status: 'draft',
-  schemaVersion: '1.0.0',
-  usedIn: [],
-  tokens: [],
-  privateSnippets: [],
-  sharedSnippets: [],
-}
-
-writeFileSync(registryPath, JSON.stringify(registry, null, 2))
-
-// Done
-console.log(`\n✓ Component "${name}" scaffolded at src/components/${name}/\n`)
-console.log('  Files created:')
-console.log(`    index.liquid`)
-console.log(`    ${name}.schema.json`)
-console.log(`    ${name}.scss`)
-console.log(`    ${isVue ? `${pascalName}.vue` : `${name}.js`}`)
-console.log(`    ${name}.md`)
-console.log(`\n  registry.json updated`)
-console.log(`\nNext steps:`)
-console.log(`  1. Edit src/components/${name}/ to implement the component`)
-console.log(`  2. Run: pnpm validate-schemas`)
-console.log(`  3. Run: pnpm render ${name} --fixture product`)
-console.log(`  4. Run: pnpm lint\n`)

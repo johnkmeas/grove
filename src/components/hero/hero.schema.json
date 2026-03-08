@@ -1,47 +1,9 @@
 {
-  "_version": "1.0.0",
+  "_version": "2.0.0",
   "name": "Hero",
   "tag": "section",
   "class": "",
   "settings": [
-    {
-      "type": "header",
-      "content": "Content"
-    },
-    {
-      "type": "inline_richtext",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Discover something new"
-    },
-    {
-      "type": "richtext",
-      "id": "subheading",
-      "label": "Subheading",
-      "default": "<p>Shop our latest collection</p>"
-    },
-    {
-      "type": "text",
-      "id": "button_label",
-      "label": "Button label",
-      "default": "Shop now"
-    },
-    {
-      "type": "url",
-      "id": "button_url",
-      "label": "Button URL"
-    },
-    {
-      "type": "select",
-      "id": "button_style",
-      "label": "Button style",
-      "options": [
-        { "value": "primary", "label": "Primary" },
-        { "value": "secondary", "label": "Secondary" },
-        { "value": "outline", "label": "Outline" }
-      ],
-      "default": "primary"
-    },
     {
       "type": "header",
       "content": "Media"
@@ -143,6 +105,7 @@
       "default": "#ffffff"
     }
   ],
+  "blocks": [{ "type": "@theme" }],
   "presets": [
     {
       "name": "Hero",
@@ -151,7 +114,31 @@
         "content_position": "middle-center",
         "content_alignment": "center",
         "height": "medium"
-      }
+      },
+      "blocks": [
+        {
+          "type": "heading",
+          "settings": {
+            "text": "Discover something new",
+            "heading_tag": "h2",
+            "size": "xl"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "<p>Shop our latest collection</p>",
+            "size": "md"
+          }
+        },
+        {
+          "type": "button",
+          "settings": {
+            "label": "Shop now",
+            "style": "primary"
+          }
+        }
+      ]
     }
   ]
 }

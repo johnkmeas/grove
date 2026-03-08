@@ -67,6 +67,37 @@ async function processLiquidFiles(srcDir, outDir) {
     writeFileSync(resolve(sectionsDir, `${componentName}.liquid`), liquidContent)
   }
 
+  // Process theme blocks (src/blocks/*/index.liquid)
+  const blockFiles = await glob(`${srcPath}/blocks/*/index.liquid`)
+  for (const liquidFile of blockFiles) {
+    const blockDir = dirname(liquidFile)
+    const blockName = basename(blockDir)
+
+    // Skip _ prefixed directories
+    if (blockName.startsWith('_')) continue
+
+    const schemaFile = resolve(blockDir, `${blockName}.schema.json`)
+    let liquidContent = readFileSync(liquidFile, 'utf-8')
+
+    // Inject schema if schema file exists
+    if (existsSync(schemaFile)) {
+      const schema = JSON.parse(readFileSync(schemaFile, 'utf-8'))
+      const schemaJson = JSON.stringify(schema, null, 2)
+      const schemaBlock = `{% schema %}\n${schemaJson}\n{% endschema %}`
+
+      if (liquidContent.includes(SCHEMA_INJECT_COMMENT)) {
+        liquidContent = liquidContent.replace(SCHEMA_INJECT_COMMENT, schemaBlock)
+      } else if (!liquidContent.includes('{% schema %}')) {
+        liquidContent = `${liquidContent}\n\n${schemaBlock}`
+      }
+    }
+
+    // Write to shopify/blocks/
+    const blocksDir = resolve(outPath, 'blocks')
+    mkdirSync(blocksDir, { recursive: true })
+    writeFileSync(resolve(blocksDir, `${blockName}.liquid`), liquidContent)
+  }
+
   // Process shared snippets (src/components/_shared/*.liquid)
   const sharedSnippets = await glob(`${srcPath}/components/_shared/*.liquid`)
   for (const snippetFile of sharedSnippets) {

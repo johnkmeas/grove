@@ -12,11 +12,10 @@
  */
 
 import { readFileSync, existsSync } from 'fs'
-import { resolve, relative } from 'path'
+import { resolve, relative, sep } from 'path'
 import { glob } from 'glob'
 
 const args = process.argv.slice(2)
-const isStaged = args.includes('--staged')
 const specificFiles = args.filter((a) => !a.startsWith('--') && a.endsWith('.schema.json'))
 
 const ROOT = process.cwd()
@@ -68,6 +67,13 @@ function addWarning(file, message) {
 }
 
 /**
+ * Check if a schema file is a block schema (lives under src/blocks/)
+ */
+function isBlockSchema(filePath) {
+  return filePath.includes(`${sep}blocks${sep}`) || filePath.includes('/blocks/')
+}
+
+/**
  * Validate a single schema file
  */
 function validateSchema(filePath) {
@@ -80,6 +86,8 @@ function validateSchema(filePath) {
     addError(filePath, `Invalid JSON: ${e.message}`)
     return
   }
+
+  const isBlock = isBlockSchema(filePath)
 
   // Required: name field
   if (!schema.name) {
@@ -105,16 +113,55 @@ function validateSchema(filePath) {
     }
   }
 
+  // Block-specific validation
+  if (isBlock) {
+    // Blocks must not have presets
+    if (schema.presets) {
+      addError(filePath, 'Block schemas must not have presets — presets belong on sections')
+    }
+
+    // Validate tag if present
+    const validTags = new Set([null, 'div', 'section', 'article', 'aside', 'header', 'footer', 'li', 'p', 'span'])
+    if (schema.tag !== undefined && !validTags.has(schema.tag)) {
+      addError(filePath, `Invalid block tag "${schema.tag}" — must be null or a valid HTML element`)
+    }
+
+    // Validate limit if present
+    if (schema.limit !== undefined && (typeof schema.limit !== 'number' || schema.limit < 1)) {
+      addError(filePath, 'Block limit must be a positive number')
+    }
+
+    return
+  }
+
+  // Section-specific validation below
+
   // Validate blocks array
   if (schema.blocks) {
     if (!Array.isArray(schema.blocks)) {
       addError(filePath, 'blocks must be an array')
     } else {
+      const hasThemeRef = schema.blocks.some((b) => b.type === '@theme')
+      const hasAppRef = schema.blocks.some((b) => b.type === '@app')
+      const hasInlineBlocks = schema.blocks.some((b) => b.type !== '@theme' && b.type !== '@app' && b.settings)
+
+      // Cannot mix @theme blocks with inline section blocks
+      if ((hasThemeRef || hasAppRef) && hasInlineBlocks) {
+        addError(filePath, 'Cannot mix @theme/@app block references with inline section blocks')
+      }
+
       for (let i = 0; i < schema.blocks.length; i++) {
         const block = schema.blocks[i]
         if (!block.type) {
           addError(filePath, `blocks[${i}] missing required field: type`)
         }
+
+        // @theme and @app are valid block references without name
+        if (block.type === '@theme' || block.type === '@app') {
+          continue
+        }
+
+        // Inline section blocks require name
         if (!block.name) {
           addError(filePath, `blocks[${i}] missing required field: name`)
         }

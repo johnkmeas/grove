@@ -1,0 +1,22 @@
+// Heading Block
+// Scoped nested BEM styles — all values via design tokens
+
+.grove-heading {
+  margin: 0;
+
+  &--sm {
+    font-size: var(--grove-typography-heading-sm);
+  }
+
+  &--md {
+    font-size: var(--grove-typography-heading-md);
+  }
+
+  &--lg {
+    font-size: var(--grove-typography-heading-lg);
+  }
+
+  &--xl {
+    font-size: var(--grove-typography-heading-xl);
+  }
+}
