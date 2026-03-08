@@ -1,0 +1,38 @@
+# Compiled Shopify output — build artifact, never edit directly
+shopify/
+
+# Node dependencies
+node_modules/
+.pnpm-store/
+
+# Build artifacts
+dist/
+.vite/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Shopify CLI
+.shopify/
+shopify.app.toml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Husky
+.husky/_

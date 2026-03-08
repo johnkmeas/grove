@@ -1,0 +1,13 @@
+{
+  "lighthouse": {
+    "performance": 90,
+    "accessibility": 95,
+    "best-practices": 90,
+    "seo": 90
+  },
+  "bundleSize": {
+    "totalCSS": "50kb",
+    "totalJS": "80kb",
+    "perComponentJS": "15kb"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "semi": false,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 120,
+  "tabWidth": 2,
+  "plugins": ["@shopify/prettier-plugin-liquid"],
+  "overrides": [
+    {
+      "files": ["*.liquid"],
+      "options": {
+        "parser": "liquid-html",
+        "singleQuote": false
+      }
+    },
+    {
+      "files": ["*.json"],
+      "options": {
+        "trailingComma": "none"
+      }
+    }
+  ]
+}

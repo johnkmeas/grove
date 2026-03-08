@@ -1,0 +1,232 @@
+// Hero Component
+// Scoped nested BEM styles — all values via design tokens
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+
+  // Height variants
+  &--height-small {
+    min-height: 400px;
+  }
+
+  &--height-medium {
+    min-height: 560px;
+  }
+
+  &--height-large {
+    min-height: 720px;
+  }
+
+  &--height-full {
+    min-height: 100svh;
+  }
+
+  // Media layer
+  &__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+
+    &--mobile {
+      display: none;
+
+      @media (max-width: 749px) {
+        display: block;
+      }
+    }
+
+    &--placeholder {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__video-wrapper {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  &__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__color-bg {
+    width: 100%;
+    height: 100%;
+  }
+
+  // Overlay
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, var(--hero-overlay-opacity, 0.4));
+    z-index: 1;
+  }
+
+  // Content layer
+  &__content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    min-height: inherit;
+    padding: var(--grove-spacing-xl) var(--grove-spacing-md);
+
+    // Vertical alignment
+    &--top {
+      justify-content: flex-start;
+    }
+
+    &--middle {
+      justify-content: center;
+    }
+
+    &--bottom {
+      justify-content: flex-end;
+    }
+
+    // Text alignment
+    &--align-left {
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    &--align-center {
+      align-items: center;
+      text-align: center;
+    }
+
+    &--align-right {
+      align-items: flex-end;
+      text-align: right;
+    }
+  }
+
+  &__content-inner {
+    max-width: 720px;
+    width: 100%;
+  }
+
+  &__heading {
+    font-size: var(--grove-typography-heading-xl-size);
+    font-weight: var(--grove-typography-heading-xl-weight);
+    line-height: var(--grove-typography-heading-xl-line-height);
+    margin: 0 0 var(--grove-spacing-md);
+    color: inherit;
+
+    @media (max-width: 749px) {
+      font-size: var(--grove-typography-heading-lg-size);
+    }
+  }
+
+  &__subheading {
+    font-size: var(--grove-typography-body-lg-size);
+    line-height: var(--grove-typography-body-lg-line-height);
+    margin: 0 0 var(--grove-spacing-lg);
+    color: inherit;
+    opacity: 0.9;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &__cta {
+    display: flex;
+    gap: var(--grove-spacing-sm);
+    flex-wrap: wrap;
+  }
+
+  // Button alignment mirrors content alignment
+  .hero__content--align-center & {
+    &__cta {
+      justify-content: center;
+    }
+  }
+
+  .hero__content--align-right & {
+    &__cta {
+      justify-content: flex-end;
+    }
+  }
+
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--grove-spacing-sm) var(--grove-spacing-lg);
+    border-radius: var(--grove-border-radius-button);
+    font-size: var(--grove-typography-body-md-size);
+    font-weight: var(--grove-typography-weight-medium);
+    text-decoration: none;
+    transition: background-color var(--grove-motion-duration-fast) var(--grove-motion-easing-standard),
+      color var(--grove-motion-duration-fast) var(--grove-motion-easing-standard),
+      border-color var(--grove-motion-duration-fast) var(--grove-motion-easing-standard);
+    cursor: pointer;
+    white-space: nowrap;
+
+    &--primary {
+      background-color: var(--grove-colors-button-primary-bg);
+      color: var(--grove-colors-button-primary-text);
+      border: 2px solid var(--grove-colors-button-primary-bg);
+
+      &:hover,
+      &:focus-visible {
+        background-color: var(--grove-colors-button-primary-bg-hover);
+        border-color: var(--grove-colors-button-primary-bg-hover);
+      }
+    }
+
+    &--secondary {
+      background-color: var(--grove-colors-button-secondary-bg);
+      color: var(--grove-colors-button-secondary-text);
+      border: 2px solid var(--grove-colors-button-secondary-bg);
+
+      &:hover,
+      &:focus-visible {
+        background-color: var(--grove-colors-button-secondary-bg-hover);
+        border-color: var(--grove-colors-button-secondary-bg-hover);
+      }
+    }
+
+    &--outline {
+      background-color: transparent;
+      color: inherit;
+      border: 2px solid currentcolor;
+
+      &:hover,
+      &:focus-visible {
+        background-color: rgba(255, 255, 255, 0.15);
+      }
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--grove-colors-focus-ring);
+      outline-offset: 2px;
+    }
+  }
+
+  // Mobile image swap
+  @media (max-width: 749px) {
+    &__image:not(&__image--mobile):not(&__image--placeholder) {
+      display: none;
+    }
+
+    &__image--mobile {
+      display: block;
+    }
+  }
+}

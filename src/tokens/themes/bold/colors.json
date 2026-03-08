@@ -1,0 +1,16 @@
+{
+  "colors": {
+    "background": "#ffffff",
+    "foreground": "#0d0d0d",
+    "primary": "#e63200",
+    "primary-hover": "#c72b00",
+    "accent": "#e63200",
+    "accent-hover": "#c72b00",
+    "focus-ring": "#e63200",
+    "button": {
+      "primary-bg": "#e63200",
+      "primary-text": "#ffffff",
+      "primary-bg-hover": "#c72b00"
+    }
+  }
+}

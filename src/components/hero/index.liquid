@@ -1,0 +1,99 @@
+{% liquid
+  assign media_type = section.settings.media_type
+  assign content_position = section.settings.content_position
+  assign content_alignment = section.settings.content_alignment
+  assign height = section.settings.height
+  assign overlay_opacity = section.settings.overlay_opacity | divided_by: 100.0
+
+  assign position_parts = content_position | split: '-'
+  assign position_vertical = position_parts[0]
+  assign position_horizontal = position_parts[1]
+%}
+
+<section
+  class="hero hero--height-{{ height }} hero--{{ media_type }}"
+  style="--hero-overlay-opacity: {{ overlay_opacity }}; color: {{ section.settings.text_color }};"
+  aria-label="{{ section.settings.heading | escape }}"
+>
+  {%- comment -%} Media layer {%- endcomment -%}
+  <div class="hero__media" aria-hidden="true">
+    {%- if media_type == 'image' -%}
+      {%- if section.settings.image != blank -%}
+        {% render 'image-srcset',
+          image: section.settings.image,
+          class: 'hero__image',
+          sizes: '100vw',
+          loading: 'eager',
+          fetchpriority: 'high'
+        %}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'hero__image hero__image--placeholder' }}
+      {%- endif -%}
+
+      {%- if section.settings.image_mobile != blank -%}
+        {% render 'image-srcset',
+          image: section.settings.image_mobile,
+          class: 'hero__image hero__image--mobile',
+          sizes: '100vw',
+          loading: 'eager',
+          fetchpriority: 'high'
+        %}
+      {%- endif -%}
+
+    {%- elsif media_type == 'video' -%}
+      {%- if section.settings.video != blank -%}
+        <div class="hero__video-wrapper">
+          {{
+            section.settings.video
+            | video_tag:
+              class: 'hero__video',
+              autoplay: true,
+              loop: true,
+              muted: true,
+              playsinline: true
+          }}
+        </div>
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'hero__image hero__image--placeholder' }}
+      {%- endif -%}
+
+    {%- elsif media_type == 'color' -%}
+      <div
+        class="hero__color-bg"
+        style="background: {{ section.settings.background_color }};"
+      ></div>
+    {%- endif -%}
+
+    {%- comment -%} Overlay {%- endcomment -%}
+    <div class="hero__overlay"></div>
+  </div>
+
+  {%- comment -%} Content layer {%- endcomment -%}
+  <div
+    class="hero__content hero__content--{{ position_vertical }} hero__content--align-{{ content_alignment }}"
+    data-position-horizontal="{{ position_horizontal }}"
+  >
+    <div class="hero__content-inner page-width">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="hero__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.subheading != blank -%}
+        <div class="hero__subheading">{{ section.settings.subheading }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <div class="hero__cta">
+          <a
+            href="{{ section.settings.button_url | default: '#' }}"
+            class="hero__button hero__button--{{ section.settings.button_style }} button button--{{ section.settings.button_style }}"
+          >
+            {{- section.settings.button_label -}}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<!-- SCHEMA_INJECT -->

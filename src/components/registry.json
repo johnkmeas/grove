@@ -1,0 +1,14 @@
+{
+  "hero": {
+    "type": "section",
+    "js": "vanilla",
+    "interactive": false,
+    "vue": false,
+    "status": "stable",
+    "schemaVersion": "1.0.0",
+    "usedIn": ["index", "landing"],
+    "tokens": ["spacing.lg", "spacing.xl", "colors.overlay-dark", "typography.heading-lg"],
+    "privateSnippets": [],
+    "sharedSnippets": ["image-srcset"]
+  }
+}

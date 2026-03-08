@@ -1,0 +1,67 @@
+name: Dev Preview
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    name: Build and deploy to dev theme
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint JS
+        run: pnpm lint:js
+
+      - name: Lint SCSS
+        run: pnpm lint:scss
+
+      - name: Validate schemas
+        run: pnpm validate-schemas
+
+      - name: Generate tokens
+        run: pnpm generate-tokens
+
+      - name: Build
+        run: pnpm build
+
+      - name: Deploy to dev theme
+        uses: shopify/theme-preview-action@v1
+        with:
+          store: ${{ secrets.SHOPIFY_STORE }}
+          token: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+          theme-id: ${{ secrets.DEV_THEME_ID }}
+          path: shopify/
+
+      - name: Comment preview URL on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🌿 Grove Preview\n\nTheme preview deployed: https://${{ secrets.SHOPIFY_STORE }}/?\\_bt=${{ secrets.DEV_THEME_ID }}\n\n*Built from \`${{ github.head_ref }}\` at ${{ github.sha }}*`
+            })

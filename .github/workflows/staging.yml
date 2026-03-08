@@ -1,0 +1,62 @@
+name: Staging Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    name: Build, check, and deploy to staging
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint JS
+        run: pnpm lint:js
+
+      - name: Lint SCSS
+        run: pnpm lint:scss
+
+      - name: Validate schemas
+        run: pnpm validate-schemas
+
+      - name: Check for breaking schema changes
+        run: pnpm schema-diff --base HEAD~1
+        continue-on-error: true
+
+      - name: Generate tokens
+        run: pnpm generate-tokens
+
+      - name: Build
+        run: pnpm build
+
+      - name: Shopify Theme Check
+        run: npx @shopify/theme-check-node shopify/ --config .shopify-theme-check.yml
+        continue-on-error: false
+
+      - name: Deploy to staging theme
+        env:
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+        run: |
+          npx @shopify/cli theme push \
+            --store ${{ secrets.SHOPIFY_STORE }} \
+            --theme ${{ secrets.STAGING_THEME_ID }} \
+            --path shopify/ \
+            --allow-live

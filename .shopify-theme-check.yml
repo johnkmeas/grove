@@ -1,0 +1,71 @@
+# Shopify Theme Check configuration
+# Runs post-build on shopify/ directory
+# https://shopify.dev/docs/storefronts/themes/tools/theme-check
+
+root: ./shopify
+
+ignore:
+  - node_modules/
+
+checks:
+  # Liquid correctness
+  SyntaxError:
+    enabled: true
+    severity: error
+
+  UndefinedObject:
+    enabled: true
+    severity: error
+
+  UnknownFilter:
+    enabled: true
+    severity: error
+
+  # Performance
+  AssetSizeCSS:
+    enabled: true
+    severity: warning
+    threshold_in_bytes: 100000
+
+  AssetSizeJavaScript:
+    enabled: true
+    severity: warning
+    threshold_in_bytes: 150000
+
+  LazyLoadedImages:
+    enabled: true
+    severity: warning
+
+  ParserBlockingJavaScript:
+    enabled: true
+    severity: error
+
+  # Accessibility
+  ImgLazyLoading:
+    enabled: true
+    severity: warning
+
+  # Schema
+  ValidSchema:
+    enabled: true
+    severity: error
+
+  ValidHTMLTranslation:
+    enabled: true
+    severity: error
+
+  TranslationKeyExists:
+    enabled: true
+    severity: error
+
+  MissingRequiredTemplateFiles:
+    enabled: true
+    severity: error
+
+  # Best practices
+  DeprecateLazysizes:
+    enabled: true
+    severity: warning
+
+  DeprecateGlobalAppBlockType:
+    enabled: false

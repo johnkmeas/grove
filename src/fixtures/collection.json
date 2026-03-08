@@ -1,0 +1,51 @@
+{
+  "id": 987654321,
+  "handle": "example-collection",
+  "title": "Example Collection",
+  "description": "<p>An example collection for local fixture rendering.</p>",
+  "published_at": "2024-01-01T00:00:00Z",
+  "updated_at": "2024-01-01T00:00:00Z",
+  "image": {
+    "src": "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-1_large.png",
+    "alt": "Example collection banner",
+    "width": 2000,
+    "height": 800
+  },
+  "all_tags": ["demo", "example", "apparel"],
+  "all_types": ["Apparel", "Accessories"],
+  "all_vendors": ["Grove Demo"],
+  "products_count": 24,
+  "url": "/collections/example-collection",
+  "products": [
+    {
+      "id": 1234567890,
+      "title": "Example Product One",
+      "handle": "example-product-one",
+      "price": 4999,
+      "compare_at_price": 6999,
+      "available": true,
+      "featured_image": {
+        "src": "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-product-1_large.png",
+        "alt": "Example Product One",
+        "width": 1200,
+        "height": 1500
+      },
+      "url": "/products/example-product-one"
+    },
+    {
+      "id": 1234567891,
+      "title": "Example Product Two",
+      "handle": "example-product-two",
+      "price": 2999,
+      "compare_at_price": null,
+      "available": true,
+      "featured_image": {
+        "src": "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-product-2_large.png",
+        "alt": "Example Product Two",
+        "width": 1200,
+        "height": 1500
+      },
+      "url": "/products/example-product-two"
+    }
+  ]
+}

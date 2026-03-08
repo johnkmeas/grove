@@ -1,0 +1,100 @@
+{
+  "id": 1234567890,
+  "title": "Example Product",
+  "handle": "example-product",
+  "description": "<p>This is an example product description for local fixture rendering.</p>",
+  "published_at": "2024-01-01T00:00:00Z",
+  "created_at": "2024-01-01T00:00:00Z",
+  "vendor": "Grove Demo",
+  "product_type": "Apparel",
+  "tags": ["demo", "example", "apparel"],
+  "price": 4999,
+  "price_min": 4999,
+  "price_max": 7999,
+  "available": true,
+  "compare_at_price": 6999,
+  "compare_at_price_min": 6999,
+  "compare_at_price_max": 9999,
+  "compare_at_price_varies": true,
+  "price_varies": true,
+  "currency_code": "USD",
+  "options": [
+    { "name": "Size", "position": 1, "values": ["XS", "S", "M", "L", "XL"] },
+    { "name": "Colour", "position": 2, "values": ["Black", "White", "Navy"] }
+  ],
+  "images": [
+    {
+      "id": 1,
+      "src": "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-product-1_large.png",
+      "alt": "Example product front view",
+      "width": 1200,
+      "height": 1500,
+      "position": 1
+    },
+    {
+      "id": 2,
+      "src": "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-product-2_large.png",
+      "alt": "Example product back view",
+      "width": 1200,
+      "height": 1500,
+      "position": 2
+    }
+  ],
+  "featured_image": {
+    "id": 1,
+    "src": "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-product-1_large.png",
+    "alt": "Example product front view",
+    "width": 1200,
+    "height": 1500
+  },
+  "url": "/products/example-product",
+  "variants": [
+    {
+      "id": 111,
+      "title": "XS / Black",
+      "option1": "XS",
+      "option2": "Black",
+      "sku": "PROD-XS-BLK",
+      "requires_shipping": true,
+      "taxable": true,
+      "available": true,
+      "price": 4999,
+      "compare_at_price": 6999,
+      "inventory_quantity": 12,
+      "inventory_management": "shopify",
+      "inventory_policy": "deny",
+      "fulfillment_service": "manual",
+      "weight": 200,
+      "weight_unit": "g",
+      "featured_image": null,
+      "unit_price_measurement": null
+    },
+    {
+      "id": 112,
+      "title": "M / Black",
+      "option1": "M",
+      "option2": "Black",
+      "sku": "PROD-M-BLK",
+      "requires_shipping": true,
+      "taxable": true,
+      "available": true,
+      "price": 5999,
+      "compare_at_price": 7999,
+      "inventory_quantity": 5,
+      "inventory_management": "shopify",
+      "inventory_policy": "deny",
+      "fulfillment_service": "manual",
+      "weight": 220,
+      "weight_unit": "g",
+      "featured_image": null,
+      "unit_price_measurement": null
+    }
+  ],
+  "selected_or_first_available_variant": {
+    "id": 111,
+    "title": "XS / Black",
+    "price": 4999,
+    "compare_at_price": 6999,
+    "available": true
+  }
+}

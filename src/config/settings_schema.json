@@ -1,0 +1,172 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Grove",
+    "theme_version": "1.0.0",
+    "theme_author": "Grove Framework",
+    "theme_documentation_url": "https://github.com/grove/grove",
+    "theme_support_url": "https://github.com/grove/grove/issues"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color_scheme_group",
+        "id": "color_schemes",
+        "definition": [
+          {
+            "type": "color",
+            "id": "background",
+            "label": "Background colour",
+            "default": "#ffffff"
+          },
+          {
+            "type": "color",
+            "id": "text",
+            "label": "Text colour",
+            "default": "#1a1a1a"
+          },
+          {
+            "type": "color",
+            "id": "primary_button",
+            "label": "Primary button background",
+            "default": "#1a1a1a"
+          },
+          {
+            "type": "color",
+            "id": "primary_button_label",
+            "label": "Primary button label",
+            "default": "#ffffff"
+          },
+          {
+            "type": "color",
+            "id": "secondary_button",
+            "label": "Secondary button background",
+            "default": "#ffffff"
+          },
+          {
+            "type": "color",
+            "id": "secondary_button_label",
+            "label": "Secondary button label",
+            "default": "#1a1a1a"
+          }
+        ],
+        "role": {
+          "background": "background",
+          "text": "text",
+          "primary_button": "solid_button_background",
+          "primary_button_label": "solid_button_label",
+          "secondary_button": "outline_button_background",
+          "secondary_button_label": "outline_button_label"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "heading_font",
+        "label": "Heading font",
+        "default": "sans-serif"
+      },
+      {
+        "type": "font_picker",
+        "id": "body_font",
+        "label": "Body font",
+        "default": "sans-serif"
+      },
+      {
+        "type": "range",
+        "id": "heading_scale",
+        "label": "Heading scale",
+        "min": 75,
+        "max": 150,
+        "step": 5,
+        "unit": "%",
+        "default": 100
+      },
+      {
+        "type": "range",
+        "id": "body_scale",
+        "label": "Body font scale",
+        "min": 75,
+        "max": 130,
+        "step": 5,
+        "unit": "%",
+        "default": 100
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "label": "Page width",
+        "min": 1000,
+        "max": 1600,
+        "step": 100,
+        "unit": "px",
+        "default": 1280
+      },
+      {
+        "type": "range",
+        "id": "spacing_sections",
+        "label": "Section spacing",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "default": 36
+      }
+    ]
+  },
+  {
+    "name": "Buttons",
+    "settings": [
+      {
+        "type": "range",
+        "id": "button_border_radius",
+        "label": "Button corner radius",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "default": 4
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok_link",
+        "label": "TikTok URL"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest URL"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "YouTube URL"
+      }
+    ]
+  }
+]

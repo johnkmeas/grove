@@ -1,0 +1,34 @@
+{% comment %}
+  icon.liquid
+  Renders an SVG icon from the theme's icon set.
+
+  Usage:
+    {% render 'icon', icon: 'cart', size: 'md', class: 'header__icon' %}
+
+  Parameters:
+    icon   — icon name string (required) — matches filename in assets/icon-{name}.svg
+    size   — 'sm' | 'md' | 'lg' (optional, default: 'md')
+    class  — additional CSS class string (optional)
+    title  — accessible title for decorative icons with aria-hidden (optional)
+{% endcomment %}
+
+{%- liquid
+  assign icon_size = size | default: 'md'
+  assign icon_class = class | default: ''
+  assign icon_aria = ''
+  if title != blank
+    assign icon_aria = title | escape
+  endif
+-%}
+
+<span
+  class="icon icon--{{ icon_size }} icon--{{ icon }}{% if icon_class != '' %} {{ icon_class }}{% endif %}"
+  {% if icon_aria != '' %}
+    role="img"
+    aria-label="{{ icon_aria }}"
+  {% else %}
+    aria-hidden="true"
+  {% endif %}
+>
+  {{- icon | prepend: 'icon-' | append: '.svg' | asset_url | img_tag -}}
+</span>

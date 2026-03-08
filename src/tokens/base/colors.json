@@ -1,0 +1,30 @@
+{
+  "colors": {
+    "background": "#ffffff",
+    "foreground": "#1a1a1a",
+    "surface": "#f5f5f5",
+    "surface-raised": "#ffffff",
+    "border": "#e0e0e0",
+    "border-subtle": "#f0f0f0",
+    "overlay-dark": "rgba(0, 0, 0, 0.5)",
+    "overlay-light": "rgba(255, 255, 255, 0.5)",
+    "primary": "#1a1a1a",
+    "primary-hover": "#333333",
+    "secondary": "#757575",
+    "secondary-hover": "#5a5a5a",
+    "accent": "#0066cc",
+    "accent-hover": "#0052a3",
+    "success": "#2e7d32",
+    "error": "#c62828",
+    "warning": "#f57c00",
+    "focus-ring": "#0066cc",
+    "button": {
+      "primary-bg": "#1a1a1a",
+      "primary-text": "#ffffff",
+      "primary-bg-hover": "#333333",
+      "secondary-bg": "#ffffff",
+      "secondary-text": "#1a1a1a",
+      "secondary-bg-hover": "#f5f5f5"
+    }
+  }
+}

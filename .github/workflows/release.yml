@@ -1,0 +1,80 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - 'release/**'
+
+jobs:
+  release:
+    name: Build and package release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Validate schemas
+        run: pnpm validate-schemas
+
+      - name: Extract version
+        id: version
+        run: echo "version=${GITHUB_REF#refs/heads/release/}" >> $GITHUB_OUTPUT
+
+      - name: Build default preset
+        run: |
+          pnpm generate-tokens --preset default
+          pnpm build
+
+      - name: Theme Check
+        run: npx @shopify/theme-check-node shopify/ --config .shopify-theme-check.yml
+
+      - name: Package default theme
+        env:
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+        run: |
+          npx @shopify/cli theme package \
+            --path shopify/
+          mv *.zip grove-default-${{ steps.version.outputs.version }}.zip
+
+      - name: Build minimal preset
+        run: |
+          pnpm generate-tokens --preset minimal
+          pnpm build
+          npx @shopify/cli theme package --path shopify/
+          mv *.zip grove-minimal-${{ steps.version.outputs.version }}.zip
+
+      - name: Build bold preset
+        run: |
+          pnpm generate-tokens --preset bold
+          pnpm build
+          npx @shopify/cli theme package --path shopify/
+          mv *.zip grove-bold-${{ steps.version.outputs.version }}.zip
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: Grove v${{ steps.version.outputs.version }}
+          generate_release_notes: true
+          files: |
+            grove-default-${{ steps.version.outputs.version }}.zip
+            grove-minimal-${{ steps.version.outputs.version }}.zip
+            grove-bold-${{ steps.version.outputs.version }}.zip

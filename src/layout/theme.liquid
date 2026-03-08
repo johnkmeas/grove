@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    <title>
+      {%- if request.page_type == 'index' -%}
+        {{ page_title }}
+        {%- if current_tags -%} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{%- endif -%}
+      {%- else -%}
+        {{ page_title }}
+        {%- if current_tags -%} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{%- endif -%}
+        &ndash; {{ shop.name }}
+      {%- endif -%}
+    </title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    {%- render 'meta-tags' -%}
+
+    {{ content_for_header }}
+
+    {%- comment -%} Design tokens — generated from src/tokens/ {%- endcomment -%}
+    {{ 'tokens.css' | asset_url | stylesheet_tag }}
+
+    {%- comment -%} Global theme styles {%- endcomment -%}
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+  </head>
+
+  <body class="template-{{ request.page_type }}">
+    <a class="skip-to-content-link button visually-hidden" href="#MainContent">
+      {{ 'accessibility.skip_to_content' | t }}
+    </a>
+
+    {%- sections 'header-group' -%}
+
+    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {%- sections 'footer-group' -%}
+
+    {%- comment -%} Global JS {%- endcomment -%}
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+
+    {%- comment -%} Cart drawer mount point {%- endcomment -%}
+    <div id="grove-cart-drawer" aria-hidden="true"></div>
+  </body>
+</html>

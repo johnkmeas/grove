@@ -1,0 +1,54 @@
+{% comment %}
+  image-srcset.liquid
+  Renders a responsive <img> tag with srcset and sizes.
+
+  Usage:
+    {% render 'image-srcset',
+      image: section.settings.image,
+      class: 'hero__image',
+      sizes: '100vw',
+      loading: 'lazy',
+      fetchpriority: 'auto'
+    %}
+
+  Parameters:
+    image        — Shopify image object (required)
+    class        — CSS class string (optional)
+    sizes        — sizes attribute string, e.g. '(min-width: 750px) 50vw, 100vw' (optional, default: '100vw')
+    loading      — 'lazy' | 'eager' (optional, default: 'lazy')
+    fetchpriority — 'high' | 'low' | 'auto' (optional, default: 'auto')
+    alt          — alt text override (optional, falls back to image.alt)
+    widths       — comma-separated widths to generate (optional)
+{% endcomment %}
+
+{%- liquid
+  assign img_sizes = sizes | default: '100vw'
+  assign img_loading = loading | default: 'lazy'
+  assign img_fetchpriority = fetchpriority | default: 'auto'
+  assign img_alt = alt | default: image.alt | escape
+  assign img_class = class | default: ''
+  assign img_widths = widths | default: '375,550,750,1100,1500,1780,2000,3000,3840'
+  assign img_widths_arr = img_widths | split: ','
+-%}
+
+{%- if image != blank -%}
+  <img
+    srcset="
+      {%- for width in img_widths_arr -%}
+        {%- assign width_int = width | strip | times: 1 -%}
+        {%- if width_int <= image.width -%}
+          {{ image | image_url: width: width_int }} {{ width_int }}w
+          {%- unless forloop.last -%},{%- endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
+    "
+    src="{{ image | image_url: width: 1500 }}"
+    sizes="{{ img_sizes }}"
+    alt="{{ img_alt }}"
+    width="{{ image.width }}"
+    height="{{ image.height }}"
+    loading="{{ img_loading }}"
+    fetchpriority="{{ img_fetchpriority }}"
+    {% if img_class != '' %}class="{{ img_class }}"{% endif %}
+  >
+{%- endif -%}
