@@ -133,6 +133,27 @@ engine.registerFilter('image_url', (image, options = {}) => {
   return 'https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-product-1_large.png'
 })
 
+engine.registerFilter('image_tag', (url, options = {}) => {
+  const {
+    class: cls = '',
+    alt = '',
+    loading = 'lazy',
+    fetchpriority = 'auto',
+    sizes = '100vw',
+  } = options
+  const attrs = [
+    `src="${url}"`,
+    `alt="${alt}"`,
+    cls ? `class="${cls}"` : '',
+    `loading="${loading}"`,
+    `fetchpriority="${fetchpriority}"`,
+    `sizes="${sizes}"`,
+  ]
+    .filter(Boolean)
+    .join(' ')
+  return `<img ${attrs}>`
+})
+
 engine.registerFilter('asset_url', (filename) => {
   return `/assets/${filename}`
 })

@@ -30,5 +30,6 @@
     aria-hidden="true"
   {% endif %}
 >
-  {{- icon | prepend: 'icon-' | append: '.svg' | asset_url | img_tag -}}
+  {%- assign icon_url = icon | prepend: 'icon-' | append: '.svg' | asset_url -%}
+  <img src="{{ icon_url }}" alt="" width="24" height="24" aria-hidden="true">
 </span>
