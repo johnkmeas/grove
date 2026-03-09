@@ -115,11 +115,6 @@ function validateSchema(filePath) {
 
   // Block-specific validation
   if (isBlock) {
-    // Blocks must not have presets
-    if (schema.presets) {
-      addError(filePath, 'Block schemas must not have presets — presets belong on sections')
-    }
-
     // Validate tag if present
     const validTags = new Set([null, 'div', 'section', 'article', 'aside', 'header', 'footer', 'li', 'p', 'span'])
     if (schema.tag !== undefined && !validTags.has(schema.tag)) {

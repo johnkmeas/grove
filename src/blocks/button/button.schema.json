@@ -25,5 +25,8 @@
       ],
       "default": "primary"
     }
+  ],
+  "presets": [
+    { "name": "Button" }
   ]
 }

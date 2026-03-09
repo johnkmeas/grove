@@ -20,5 +20,8 @@
       ],
       "default": "md"
     }
+  ],
+  "presets": [
+    { "name": "Text" }
   ]
 }

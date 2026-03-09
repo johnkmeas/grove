@@ -106,7 +106,6 @@
     }
   ],
   "blocks": [
-    { "type": "@theme" },
     { "type": "heading" },
     { "type": "text" },
     { "type": "button" }
