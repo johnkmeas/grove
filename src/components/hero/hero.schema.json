@@ -102,14 +102,10 @@
       "type": "color",
       "id": "text_color",
       "label": "Text colour",
-      "default": "#ffffff"
+      "default": "#1a1a1a"
     }
   ],
-  "blocks": [
-    { "type": "heading" },
-    { "type": "text" },
-    { "type": "button" }
-  ],
+  "blocks": [{ "type": "heading" }, { "type": "text" }, { "type": "button" }],
   "presets": [
     {
       "name": "Hero",
@@ -117,7 +113,8 @@
         "media_type": "image",
         "content_position": "middle-center",
         "content_alignment": "center",
-        "height": "medium"
+        "height": "medium",
+        "text_color": "#ffffff"
       },
       "blocks": [
         {
