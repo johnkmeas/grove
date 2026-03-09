@@ -20,7 +20,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: 10
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -47,12 +47,14 @@ jobs:
         run: pnpm build
 
       - name: Deploy to dev theme
-        uses: shopify/theme-preview-action@v1
-        with:
-          store: ${{ secrets.SHOPIFY_STORE }}
-          token: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
-          theme-id: ${{ secrets.DEV_THEME_ID }}
-          path: shopify/
+        env:
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+        run: |
+          npx @shopify/cli theme push \
+            --store ${{ secrets.SHOPIFY_STORE }} \
+            --theme ${{ secrets.DEV_THEME_ID }} \
+            --path shopify/ \
+            --allow-live
 
       - name: Comment preview URL on PR
         if: github.event_name == 'pull_request'
