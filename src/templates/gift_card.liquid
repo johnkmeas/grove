@@ -1,0 +1,100 @@
+{% layout 'theme' %}
+
+<div class="grove-gift-card">
+  <h1 class="grove-gift-card__heading">{{ 'gift_cards.heading' | t }}</h1>
+
+  {%- if gift_card.enabled == false or gift_card.expired -%}
+    <p class="grove-gift-card__badge grove-gift-card__badge--expired">{{ 'gift_cards.expired' | t }}</p>
+  {%- endif -%}
+
+  {%- if gift_card.enabled -%}
+    <div class="grove-gift-card__image-wrapper">
+      <img
+        class="grove-gift-card__image"
+        src="{{ 'gift-card/card.svg' | shopify_asset_url }}"
+        alt="{{ 'gift_cards.heading' | t }}"
+        width="570"
+        height="360"
+        loading="eager"
+      >
+    </div>
+  {%- endif -%}
+
+  <div class="grove-gift-card__info">
+    <p class="grove-gift-card__balance">
+      {%- if gift_card.balance != gift_card.initial_value -%}
+        <span class="grove-gift-card__balance-remaining">{{ gift_card.balance | money }}</span>
+        <span class="grove-gift-card__balance-initial">
+          {{- 'gift_cards.initial_value' | t }}
+          {{ gift_card.initial_value | money -}}
+        </span>
+      {%- else -%}
+        <span class="grove-gift-card__balance-remaining">{{ gift_card.balance | money }}</span>
+      {%- endif -%}
+    </p>
+
+    <div class="grove-gift-card__code-wrapper" id="GiftCardCode">
+      <label class="grove-gift-card__code-label" for="GiftCardInput">{{ 'gift_cards.code_label' | t }}</label>
+      <input
+        class="grove-gift-card__code-input"
+        type="text"
+        id="GiftCardInput"
+        value="{{ gift_card.code | format_code }}"
+        aria-label="{{ 'gift_cards.code_label' | t }}"
+        readonly
+      >
+      <button class="grove-gift-card__copy-button" id="GiftCardCopyButton" onclick="copyGiftCardCode()">
+        {{ 'gift_cards.copy_code' | t }}
+      </button>
+    </div>
+
+    {%- if gift_card.expires_on -%}
+      <p class="grove-gift-card__expiry">
+        {%- if gift_card.expired -%}
+          {{ 'gift_cards.expired_on' | t: date: gift_card.expires_on | date: '%B %d, %Y' }}
+        {%- else -%}
+          {{ 'gift_cards.expires_on' | t: date: gift_card.expires_on | date: '%B %d, %Y' }}
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+  </div>
+
+  {%- if gift_card.pass_url -%}
+    <a class="grove-gift-card__apple-wallet" href="{{ gift_card.pass_url }}">
+      <img
+        src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}"
+        alt="{{ 'gift_cards.add_to_apple_wallet' | t }}"
+        width="120"
+        height="40"
+        loading="lazy"
+      >
+    </a>
+  {%- endif -%}
+
+  <div class="grove-gift-card__qr" id="GiftCardQr" data-identifier="{{ gift_card.qr_identifier }}"></div>
+
+  <div class="grove-gift-card__actions">
+    <a class="grove-gift-card__shop-link" href="{{ shop.url }}">{{ 'gift_cards.shop_link' | t }}</a>
+
+    {%- if gift_card.enabled -%}
+      <a class="grove-gift-card__print-link" href="javascript:window.print();">{{ 'gift_cards.print' | t }}</a>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  function copyGiftCardCode() {
+    var input = document.getElementById('GiftCardInput')
+    input.select()
+    document.execCommand('copy')
+  }
+
+  var qrEl = document.getElementById('GiftCardQr')
+  if (qrEl && qrEl.dataset.identifier) {
+    new QRCode(qrEl, {
+      text: qrEl.dataset.identifier,
+      width: 120,
+      height: 120,
+    })
+  }
+</script>
