@@ -35,9 +35,7 @@ function getComponentEntries() {
   return entries
 }
 
-export default defineConfig(({ mode }) => {
-  const preset = process.env.npm_config_preset || mode || 'default'
-
+export default defineConfig(() => {
   return {
     plugins: [
       vue(),
@@ -46,15 +44,6 @@ export default defineConfig(({ mode }) => {
         outDir: 'shopify',
       }),
     ],
-
-    css: {
-      preprocessorOptions: {
-        scss: {
-          // Make token variables available globally
-          additionalData: `@use "src/tokens/tokens" as *;`,
-        },
-      },
-    },
 
     build: {
       outDir: 'shopify/assets',
