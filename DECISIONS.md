@@ -113,4 +113,49 @@ Grove currently inlines all content as section-level settings (heading, subheadi
 
 ---
 
+## ADR-005 — Shopify Theme Block Patterns Reference
+
+**Date:** 2026-03-09
+**Status:** Accepted
+
+### Context
+
+Multiple failed attempts to fix hero section blocks in the theme editor revealed gaps in understanding of Shopify's theme block system. This ADR documents the correct patterns based on [Shopify's official documentation](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks).
+
+### Shopify Theme Block Targeting Patterns
+
+| Pattern | Schema | Behavior |
+|---|---|---|
+| Accept all blocks | `[{ "type": "@theme" }]` | All public blocks appear in picker |
+| Target specific blocks | `[{ "type": "heading" }, { "type": "button" }]` | Only listed blocks appear |
+| Recommend blocks | `[{ "type": "@theme" }, { "type": "heading" }]` | Listed blocks highlighted, others via "Show all" |
+| Private blocks | `[{ "type": "_slide" }]` | File is `_slide.liquid`; hidden from `@theme` pickers |
+| Static blocks | `{% content_for "block", type: "x", id: "x" %}` | Fixed position, not deletable by merchant |
+| Accept app blocks | `[{ "type": "@app" }]` | Enables app blocks in section |
+
+### Key Rules
+
+- **`@theme` is NOT mandatory.** Targeting specific blocks by type works without it.
+- **Underscore prefix is NOT mandatory.** It only controls visibility in `@theme` sections (private vs public).
+- **Block type = block filename** (without `.liquid`). E.g., `blocks/heading.liquid` → type `heading`.
+- **Blocks need `presets`** in their schema to appear in the block picker.
+- **JSON templates need `blocks` + `block_order`** keys for the block picker to activate in the editor.
+- **No mixing:** A section uses EITHER theme blocks OR inline section blocks, never both.
+- **Nesting:** Up to 8 levels deep via `{% content_for 'blocks' %}` in block templates.
+
+### Documentation Links
+
+- [Quick start](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks/quick-start)
+- [Block schema](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks/schema)
+- [Targeting](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks/targeting)
+- [Static blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks/static-blocks)
+
+### Consequences
+
+- ADR-004's `"blocks": [{ "type": "@theme" }]` is the DEFAULT pattern, not the only valid one.
+- Agents must check JSON template `blocks`/`block_order` keys before assuming a schema issue.
+- Build plugin must compile `_`-prefixed block directories (Shopify private blocks convention).
+
+---
+
 *Add new ADRs below this line.*
