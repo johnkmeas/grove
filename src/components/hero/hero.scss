@@ -3,8 +3,8 @@
 
 .hero {
   position: relative;
-  overflow: hidden;
   width: 100%;
+  overflow: hidden;
 
   // Height variants
   &--height-small {
@@ -31,11 +31,11 @@
   }
 
   &__image {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
-    display: block;
 
     &--placeholder {
       width: 100%;
@@ -64,8 +64,8 @@
   &__overlay {
     position: absolute;
     inset: 0;
-    background-color: rgba(0, 0, 0, var(--hero-overlay-opacity, 0.4));
     z-index: 1;
+    background-color: rgb(0 0 0 / var(--grove-hero-overlay-opacity, 0.4));
   }
 
   // Content layer
@@ -108,27 +108,27 @@
   }
 
   &__content-inner {
-    max-width: 720px;
     width: 100%;
+    max-width: 720px;
   }
 
   &__heading {
+    @media (width <= 749px) {
+      font-size: var(--grove-typography-heading-lg-size);
+    }
+
+    margin: 0 0 var(--grove-spacing-md);
+    color: inherit;
     font-size: var(--grove-typography-heading-xl-size);
     font-weight: var(--grove-typography-heading-xl-weight);
     line-height: var(--grove-typography-heading-xl-line-height);
-    margin: 0 0 var(--grove-spacing-md);
-    color: inherit;
-
-    @media (max-width: 749px) {
-      font-size: var(--grove-typography-heading-lg-size);
-    }
   }
 
   &__subheading {
-    font-size: var(--grove-typography-body-lg-size);
-    line-height: var(--grove-typography-body-lg-line-height);
     margin: 0 0 var(--grove-spacing-lg);
     color: inherit;
+    font-size: var(--grove-typography-body-lg-size);
+    line-height: var(--grove-typography-body-lg-line-height);
     opacity: 0.9;
 
     p {
@@ -138,8 +138,8 @@
 
   &__cta {
     display: flex;
-    gap: var(--grove-spacing-sm);
     flex-wrap: wrap;
+    gap: var(--grove-spacing-sm);
   }
 
   // Button alignment mirrors content alignment
@@ -164,44 +164,45 @@
     font-size: var(--grove-typography-body-md-size);
     font-weight: var(--grove-typography-weight-medium);
     text-decoration: none;
-    transition: background-color var(--grove-motion-duration-fast) var(--grove-motion-easing-standard),
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color var(--grove-motion-duration-fast) var(--grove-motion-easing-standard),
       color var(--grove-motion-duration-fast) var(--grove-motion-easing-standard),
       border-color var(--grove-motion-duration-fast) var(--grove-motion-easing-standard);
-    cursor: pointer;
-    white-space: nowrap;
 
     &--primary {
+      border: 2px solid var(--grove-colors-button-primary-bg);
       background-color: var(--grove-colors-button-primary-bg);
       color: var(--grove-colors-button-primary-text);
-      border: 2px solid var(--grove-colors-button-primary-bg);
 
       &:hover,
       &:focus-visible {
-        background-color: var(--grove-colors-button-primary-bg-hover);
         border-color: var(--grove-colors-button-primary-bg-hover);
+        background-color: var(--grove-colors-button-primary-bg-hover);
       }
     }
 
     &--secondary {
+      border: 2px solid var(--grove-colors-button-secondary-bg);
       background-color: var(--grove-colors-button-secondary-bg);
       color: var(--grove-colors-button-secondary-text);
-      border: 2px solid var(--grove-colors-button-secondary-bg);
 
       &:hover,
       &:focus-visible {
-        background-color: var(--grove-colors-button-secondary-bg-hover);
         border-color: var(--grove-colors-button-secondary-bg-hover);
+        background-color: var(--grove-colors-button-secondary-bg-hover);
       }
     }
 
     &--outline {
+      border: 2px solid currentcolor;
       background-color: transparent;
       color: inherit;
-      border: 2px solid currentcolor;
 
       &:hover,
       &:focus-visible {
-        background-color: rgba(255, 255, 255, 0.15);
+        background-color: rgb(255 255 255 / 15%);
       }
     }
 
@@ -210,5 +211,4 @@
       outline-offset: 2px;
     }
   }
-
 }

@@ -12,17 +12,17 @@
 
 html {
   font-size: 100%;
-  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: var(--font-body-family), sans-serif;
+  background-color: var(--grove-colors-background);
+  color: var(--grove-colors-foreground);
+  font-family: var(--grove-font-body-family), sans-serif;
   font-size: var(--grove-typography-body-md-size);
   line-height: var(--grove-typography-body-md-line-height);
-  color: var(--grove-colors-foreground);
-  background-color: var(--grove-colors-background);
 }
 
 img,
@@ -42,12 +42,12 @@ a {
   position: absolute;
   width: 1px;
   height: 1px;
-  padding: 0;
-  margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
+  margin: -1px;
+  padding: 0;
   border: 0;
+  white-space: nowrap;
+  clip: rect(0, 0, 0, 0);
 }
 
 .page-width {
@@ -74,10 +74,10 @@ a {
     left: var(--grove-spacing-md);
     z-index: 9999;
     padding: var(--grove-spacing-sm) var(--grove-spacing-lg);
-    background: var(--grove-colors-background);
-    color: var(--grove-colors-foreground);
     border: 2px solid var(--grove-colors-foreground);
     border-radius: var(--grove-border-radius-sm);
+    background: var(--grove-colors-background);
+    color: var(--grove-colors-foreground);
     font-size: var(--grove-typography-body-md-size);
     font-weight: var(--grove-typography-weight-medium);
     text-decoration: none;
