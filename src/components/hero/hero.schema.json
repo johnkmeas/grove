@@ -105,7 +105,11 @@
       "default": "#ffffff"
     }
   ],
-  "blocks": [{ "type": "@theme" }],
+  "blocks": [
+    { "type": "heading" },
+    { "type": "text" },
+    { "type": "button" }
+  ],
   "presets": [
     {
       "name": "Hero",

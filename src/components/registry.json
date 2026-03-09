@@ -11,6 +11,6 @@
     "tokens": ["spacing.lg", "spacing.xl", "colors.overlay-dark", "typography.heading-lg"],
     "privateSnippets": [],
     "sharedSnippets": ["image-srcset"],
-    "consumesBlocks": ["heading", "text", "button", "image"]
+    "consumesBlocks": ["heading", "text", "button"]
   }
 }
