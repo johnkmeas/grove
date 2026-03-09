@@ -12,6 +12,8 @@ jobs:
   build-and-deploy:
     name: Build and deploy to dev theme
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
 
     steps:
       - name: Checkout
