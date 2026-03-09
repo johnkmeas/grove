@@ -48,7 +48,7 @@ jobs:
         run: pnpm build
 
       - name: Shopify Theme Check
-        run: npx @shopify/theme-check-node shopify/ --config .shopify-theme-check.yml
+        run: pnpm exec theme-check-node shopify/ --config .shopify-theme-check.yml
         continue-on-error: false
 
       - name: Deploy to staging theme
