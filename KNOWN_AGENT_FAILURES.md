@@ -86,4 +86,22 @@
 
 ---
 
+### 9 — Wrong Diagnosis for Missing Theme Blocks in Editor
+
+**What happens:** Agent assumes blocks don't appear because of a missing `@theme` entry or because blocks need underscore-prefixed filenames. Agent proposes schema changes without checking the actual root causes.
+
+**Result:** Wrong fix applied. Blocks still don't show in the theme editor. Multiple failed fix attempts.
+
+**Prevention:** When blocks don't appear in the theme editor, check in this order:
+
+1. **JSON template has `blocks` + `block_order`** — sections in JSON templates need these keys for the block picker to activate.
+2. **Build produces files in `shopify/blocks/`** — run `pnpm build` and verify block `.liquid` files exist with valid `{% schema %}` tags.
+3. **Block schemas have `presets`** — blocks need a `presets` array to appear in the picker.
+4. **Block type matches filename** — `{ "type": "heading" }` requires `blocks/heading.liquid`.
+5. **Only then** check the targeting pattern in the section schema.
+
+Key facts: `@theme` is NOT mandatory for targeting. Underscore prefix is NOT mandatory. See ADR-005.
+
+---
+
 *Add new failure patterns below this line.*

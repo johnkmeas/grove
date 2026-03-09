@@ -74,8 +74,10 @@ async function processLiquidFiles(srcDir, outDir) {
     const blockDir = dirname(liquidFile)
     const blockName = basename(blockDir)
 
-    // Skip _ prefixed directories
-    if (blockName.startsWith('_')) continue
+    // Note: Do NOT skip _ prefixed blocks. In Shopify, _ prefix means
+    // "private theme block" (hidden from @theme pickers). These must still
+    // be compiled to shopify/blocks/. The _ skip is only for components
+    // (line 46 above) where _ means shared snippets.
 
     const schemaFile = resolve(blockDir, `${blockName}.schema.json`)
     let liquidContent = readFileSync(liquidFile, 'utf-8')
