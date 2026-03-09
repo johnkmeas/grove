@@ -16,6 +16,7 @@
     "validate-schemas": "node scripts/validate-schemas.js",
     "schema-diff": "node scripts/schema-diff.js",
     "generate-tokens": "node scripts/generate-tokens.js",
+    "theme-check": "node node_modules/@shopify/theme-check-node/dist/cli.js",
     "new-component": "node scripts/new-component.js",
     "render": "node scripts/render-fixture.js",
     "prepare": "husky"
