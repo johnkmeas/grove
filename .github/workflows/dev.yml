@@ -1,9 +1,11 @@
 name: Dev Preview
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - 'feature/**'
+      - 'claude/**'
   pull_request:
     branches:
       - main
