@@ -161,13 +161,18 @@ function validateSchema(filePath) {
           continue
         }
 
-        // Inline section blocks require name
-        if (!block.name) {
-          addError(filePath, `blocks[${i}] missing required field: name`)
-        }
-        if (block.settings && Array.isArray(block.settings)) {
-          for (let j = 0; j < block.settings.length; j++) {
-            validateSetting(filePath, block.settings[j], `blocks[${i}].settings[${j}]`)
+        // Theme block type references (no inline settings) don't require name —
+        // Shopify resolves the name and settings from the theme block file.
+        // Only true inline section blocks (those that define their own settings)
+        // must have a name.
+        if (block.settings) {
+          if (!block.name) {
+            addError(filePath, `blocks[${i}] missing required field: name`)
+          }
+          if (Array.isArray(block.settings)) {
+            for (let j = 0; j < block.settings.length; j++) {
+              validateSetting(filePath, block.settings[j], `blocks[${i}].settings[${j}]`)
+            }
           }
         }
       }
