@@ -30,7 +30,7 @@
     "type": "block",
     "status": "stable",
     "schemaVersion": "1.0.0",
-    "reusableIn": ["hero"],
+    "reusableIn": [],
     "tokens": []
   }
 }
