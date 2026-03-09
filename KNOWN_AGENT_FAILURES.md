@@ -56,4 +56,34 @@
 
 ---
 
+### 6 — Using `section.settings` Inside a Theme Block
+
+**What happens:** Agent writes `{{ section.settings.heading }}` inside a theme block's `index.liquid`. Theme blocks have their own isolated scope and cannot access section settings.
+
+**Result:** The value renders as empty. Block appears blank in the theme editor with no visible error.
+
+**Prevention:** Inside `src/blocks/*/index.liquid`, always use `block.settings` and `block.id`. Never reference `section.settings` or `section.id`. Global Liquid objects (e.g. `shop`, `cart`, `routes`) are still available.
+
+---
+
+### 7 — Mixing @theme Blocks and Inline Section Blocks
+
+**What happens:** Agent adds `{ "type": "@theme" }` to the `blocks` array in a section schema that also has inline section block definitions (blocks with `name` + `settings`). Shopify does not allow both models in the same section.
+
+**Result:** Schema validation error. Section fails to render in the theme editor.
+
+**Prevention:** A section uses EITHER `{ "type": "@theme" }` (theme blocks) OR inline block definitions, never both. Check the section's `blockModel` field in `registry.json` to confirm which model it uses.
+
+---
+
+### 8 — Rendering Snippets in Blocks with Ambient Variables
+
+**What happens:** Agent renders a snippet inside a theme block that relies on variables from the parent section scope (e.g. `{% render 'snippet', image: section.settings.image %}`). Since `section.settings` is not available in blocks, the snippet receives a blank value.
+
+**Result:** Snippet renders incorrectly or produces blank output. No Liquid error.
+
+**Prevention:** Snippets rendered inside blocks must only use values from `block.settings` or global objects. Example: `{% render 'image-srcset', image: block.settings.image %}`.
+
+---
+
 *Add new failure patterns below this line.*

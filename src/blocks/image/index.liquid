@@ -1,0 +1,13 @@
+{%- if block.settings.image != blank -%}
+  <div class="grove-image" {{ block.shopify_attributes }}>
+    {% render 'image-srcset',
+      image: block.settings.image,
+      class: 'grove-image__img',
+      sizes: block.settings.sizes,
+      loading: block.settings.loading,
+      alt: block.settings.image.alt
+    %}
+  </div>
+{%- endif -%}
+
+<!-- SCHEMA_INJECT -->

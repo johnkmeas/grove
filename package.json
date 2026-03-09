@@ -21,6 +21,8 @@
     "prepare": "husky"
   },
   "devDependencies": {
+    "@eslint/compat": "^2.0.3",
+    "@eslint/js": "^9.39.4",
     "@shopify/prettier-plugin-liquid": "^1.5.0",
     "@shopify/theme-check-node": "^2.0.0",
     "@vitejs/plugin-vue": "^5.0.0",
@@ -28,6 +30,7 @@
     "eslint": "^9.0.0",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-vue": "^9.0.0",
+    "glob": "^13.0.6",
     "husky": "^9.0.0",
     "lint-staged": "^15.0.0",
     "prettier": "^3.0.0",
@@ -42,11 +45,23 @@
     "liquidjs": "^10.0.0"
   },
   "lint-staged": {
-    "*.{js,vue}": ["eslint --fix", "prettier --write"],
-    "*.scss": ["stylelint --fix", "prettier --write"],
-    "*.liquid": ["prettier --write"],
-    "*.json": ["prettier --write"],
-    "*.schema.json": ["node scripts/validate-schemas.js --staged"]
+    "*.{js,vue}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.scss": [
+      "stylelint --fix",
+      "prettier --write"
+    ],
+    "*.liquid": [
+      "prettier --write"
+    ],
+    "*.json": [
+      "prettier --write"
+    ],
+    "*.schema.json": [
+      "node scripts/validate-schemas.js --staged"
+    ]
   },
   "engines": {
     "node": ">=18.0.0",

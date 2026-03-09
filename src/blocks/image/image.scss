@@ -1,0 +1,10 @@
+// Image Block
+// Scoped nested BEM styles — all values via design tokens
+
+.grove-image {
+  &__img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}

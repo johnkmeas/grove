@@ -1,14 +1,16 @@
 {
   "hero": {
     "type": "section",
+    "blockModel": "theme",
     "js": "vanilla",
     "interactive": false,
     "vue": false,
     "status": "stable",
-    "schemaVersion": "1.0.0",
+    "schemaVersion": "2.0.0",
     "usedIn": ["index", "landing"],
     "tokens": ["spacing.lg", "spacing.xl", "colors.overlay-dark", "typography.heading-lg"],
     "privateSnippets": [],
-    "sharedSnippets": ["image-srcset"]
+    "sharedSnippets": ["image-srcset"],
+    "consumesBlocks": ["heading", "text", "button", "image"]
   }
 }

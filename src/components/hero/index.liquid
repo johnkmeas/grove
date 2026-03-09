@@ -13,7 +13,7 @@
 <section
   class="hero hero--height-{{ height }} hero--{{ media_type }}"
   style="--hero-overlay-opacity: {{ overlay_opacity }}; color: {{ section.settings.text_color }};"
-  aria-label="{{ section.settings.heading | escape }}"
+  aria-label="{{ 'sections.hero.aria_label' | t }}"
 >
   {%- comment -%} Media layer {%- endcomment -%}
   <div class="hero__media" aria-hidden="true">
@@ -31,7 +31,8 @@
               height="{{ section.settings.image_mobile.height }}"
             >
           {%- endif -%}
-          {{- section.settings.image
+          {{-
+            section.settings.image
             | image_url: width: 3840
             | image_tag:
               widths: '750, 1100, 1500, 1780, 2000, 2560, 3840',
@@ -51,12 +52,7 @@
         <div class="hero__video-wrapper">
           {{
             section.settings.video
-            | video_tag:
-              class: 'hero__video',
-              autoplay: true,
-              loop: true,
-              muted: true,
-              playsinline: true
+            | video_tag: class: 'hero__video', autoplay: true, loop: true, muted: true, playsinline: true
           }}
         </div>
       {%- else -%}
@@ -80,24 +76,7 @@
     data-position-horizontal="{{ position_horizontal }}"
   >
     <div class="hero__content-inner page-width">
-      {%- if section.settings.heading != blank -%}
-        <h2 class="hero__heading">{{ section.settings.heading }}</h2>
-      {%- endif -%}
-
-      {%- if section.settings.subheading != blank -%}
-        <div class="hero__subheading">{{ section.settings.subheading }}</div>
-      {%- endif -%}
-
-      {%- if section.settings.button_label != blank -%}
-        <div class="hero__cta">
-          <a
-            href="{{ section.settings.button_url | default: '#' }}"
-            class="hero__button hero__button--{{ section.settings.button_style }} button button--{{ section.settings.button_style }}"
-          >
-            {{- section.settings.button_label -}}
-          </a>
-        </div>
-      {%- endif -%}
+      {% content_for 'blocks' %}
     </div>
   </div>
 </section>

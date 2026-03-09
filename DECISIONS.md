@@ -80,4 +80,37 @@ All merchant-facing strings use `{{ 'component.key' | t }}`. Never hardcode text
 
 ---
 
+## ADR-004 — Shopify Theme Blocks
+
+**Date:** 2026-03-08
+**Status:** Accepted
+
+### Context
+
+Grove currently inlines all content as section-level settings (heading, subheading, button). This prevents reuse — the same heading/button patterns must be duplicated in every section. Shopify's Theme Blocks (`@theme` blocks) provide reusable content blocks that merchants can compose freely into any section that opts in.
+
+### Decisions
+
+| Decision | Choice | Reason |
+|---|---|---|
+| Block source | `src/blocks/[name]/` | Parallel to `src/components/`, keeps concerns separate |
+| Block registry | `src/blocks/registry.json` | Separate from section registry — different schema shape and lifecycle |
+| Build output | `shopify/blocks/[name].liquid` | Standard Shopify theme blocks directory |
+| Block CSS | `grove-[name]` BEM prefix | Avoids collision with section-level classes |
+| Section opt-in | `"blocks": [{ "type": "@theme" }]` | Standard Shopify theme block reference |
+| Default for new sections | Theme blocks | Inline section blocks deprecated for new development |
+| Migration | Incremental, per-section | Existing sections keep working as-is |
+| Snippets in blocks | Allowed if fully parameterized | `{% render %}` creates isolated scope; snippet must not rely on ambient variables |
+
+### Consequences
+
+- New `src/blocks/` directory with its own registry.
+- Build pipeline extended to compile blocks to `shopify/blocks/`.
+- `validate-schemas.js` updated to understand `@theme`/`@app` block types and block schemas.
+- `new-component.js` gains `--type block` flag.
+- A section uses EITHER theme blocks OR inline section blocks, never both.
+- Existing sections continue to work unchanged. Migration is atomic per section.
+
+---
+
 *Add new ADRs below this line.*

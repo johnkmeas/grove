@@ -1,0 +1,36 @@
+{
+  "heading": {
+    "type": "block",
+    "status": "stable",
+    "schemaVersion": "1.0.0",
+    "reusableIn": ["hero"],
+    "tokens": ["typography.heading-sm", "typography.heading-md", "typography.heading-lg", "typography.heading-xl"]
+  },
+  "text": {
+    "type": "block",
+    "status": "stable",
+    "schemaVersion": "1.0.0",
+    "reusableIn": ["hero"],
+    "tokens": ["typography.body-sm", "typography.body-md", "typography.body-lg"]
+  },
+  "button": {
+    "type": "block",
+    "status": "stable",
+    "schemaVersion": "1.0.0",
+    "reusableIn": ["hero"],
+    "tokens": [
+      "colors.button-primary-bg",
+      "colors.button-primary-text",
+      "colors.button-primary-hover",
+      "spacing.sm",
+      "spacing.lg"
+    ]
+  },
+  "image": {
+    "type": "block",
+    "status": "stable",
+    "schemaVersion": "1.0.0",
+    "reusableIn": ["hero"],
+    "tokens": []
+  }
+}

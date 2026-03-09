@@ -8,6 +8,7 @@
   "bundleSize": {
     "totalCSS": "50kb",
     "totalJS": "80kb",
-    "perComponentJS": "15kb"
+    "perComponentJS": "15kb",
+    "perBlockCSS": "2kb"
   }
 }
