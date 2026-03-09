@@ -40,6 +40,12 @@
           },
           {
             "type": "color",
+            "id": "primary_button_border",
+            "label": "Primary button border",
+            "default": "#1a1a1a"
+          },
+          {
+            "type": "color",
             "id": "secondary_button",
             "label": "Secondary button background",
             "default": "#ffffff"
@@ -62,6 +68,7 @@
           "text": "text",
           "primary_button": "solid_button_background",
           "primary_button_label": "solid_button_label",
+          "primary_button_border": "solid_button_border",
           "secondary_button": "outline_button_background",
           "secondary_button_label": "outline_button_label",
           "secondary_button_border": "outline_button_border"
