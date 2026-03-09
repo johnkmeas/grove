@@ -106,9 +106,9 @@
     }
   ],
   "blocks": [
-    { "type": "heading" },
-    { "type": "text" },
-    { "type": "button" }
+    { "type": "heading", "name": "Heading" },
+    { "type": "text", "name": "Text" },
+    { "type": "button", "name": "Button" }
   ],
   "presets": [
     {
