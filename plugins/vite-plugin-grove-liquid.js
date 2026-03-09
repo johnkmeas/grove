@@ -51,6 +51,7 @@ async function processLiquidFiles(srcDir, outDir) {
     // Inject schema if schema file exists
     if (existsSync(schemaFile)) {
       const schema = JSON.parse(readFileSync(schemaFile, 'utf-8'))
+      delete schema._version
       const schemaJson = JSON.stringify(schema, null, 2)
       const schemaBlock = `{% schema %}\n${schemaJson}\n{% endschema %}`
 
@@ -82,6 +83,7 @@ async function processLiquidFiles(srcDir, outDir) {
     // Inject schema if schema file exists
     if (existsSync(schemaFile)) {
       const schema = JSON.parse(readFileSync(schemaFile, 'utf-8'))
+      delete schema._version
       const schemaJson = JSON.stringify(schema, null, 2)
       const schemaBlock = `{% schema %}\n${schemaJson}\n{% endschema %}`
 

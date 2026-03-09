@@ -3,5 +3,17 @@
     "meta": {
       "tags": "Tagged with {{ tags }}"
     }
+  },
+  "gift_cards": {
+    "heading": "Here's your gift card!",
+    "expired": "Expired",
+    "initial_value": "Initial value:",
+    "code_label": "Gift card code",
+    "copy_code": "Copy code",
+    "expires_on": "Expires on {{ date }}",
+    "expired_on": "Expired on {{ date }}",
+    "add_to_apple_wallet": "Add to Apple Wallet",
+    "shop_link": "Continue shopping",
+    "print": "Print gift card"
   }
 }
