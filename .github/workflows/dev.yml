@@ -44,11 +44,19 @@ jobs:
       - name: Validate schemas
         run: pnpm validate-schemas
 
+      - name: Check for breaking schema changes
+        run: pnpm schema-diff --base HEAD~1
+        continue-on-error: true
+
       - name: Generate tokens
         run: pnpm generate-tokens
 
       - name: Build
         run: pnpm build
+
+      - name: Shopify Theme Check
+        run: pnpm theme-check shopify/
+        continue-on-error: false
 
       - name: Deploy to dev theme
         env:
