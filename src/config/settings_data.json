@@ -3,10 +3,10 @@
     "colors": {
       "background": "#fafafa",
       "text": "#111111",
-      "primary_button": "#111111",
-      "primary_button_label": "#ffffff",
-      "secondary_button": "#ffffff",
-      "secondary_button_label": "#111111"
+      "button": "#111111",
+      "button_label": "#ffffff",
+      "secondary_button_label": "#111111",
+      "shadow": "#111111"
     },
     "heading_font": "sans-serif",
     "body_font": "sans-serif",
