@@ -16,7 +16,7 @@ dist/
 
 # Shopify CLI
 .shopify/
-shopify.app.toml
+shopify.*.toml
 
 # OS
 .DS_Store

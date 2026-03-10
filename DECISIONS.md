@@ -158,4 +158,34 @@ Multiple failed attempts to fix hero section blocks in the theme editor revealed
 
 ---
 
+## ADR-006 — Horizon-Style Asset Loading
+
+**Date:** 2026-03-10
+**Status:** Accepted
+
+### Context
+
+Component CSS was never compiled (SCSS files existed but were not imported), JS output to invalid subdirectories, and no section loaded its own assets. Needed a pattern that works with Shopify's asset delivery and meets theme store editability requirements.
+
+### Decisions
+
+| Decision | Choice | Reason |
+|---|---|---|
+| Component CSS delivery | `{% stylesheet %}` tags in Liquid | Shopify handles concatenation/delivery via `content_for_header` |
+| Component JS delivery | `{% javascript %}` tags in Liquid | Same Shopify-managed delivery, no manual `<script>` tags needed |
+| SCSS compilation | Build plugin, `style: 'expanded'` | Human-readable output required for theme store |
+| JS minification | Disabled (`minify: false`) | Same theme store editability requirement |
+| Vite scope | Global assets only (`theme.js`, `theme.css`, Vue islands) | Component JS/CSS handled by build plugin |
+| Asset directory | Flat `shopify/assets/`, no subdirectories | Shopify requirement |
+
+### Consequences
+
+- `plugins/vite-plugin-grove-liquid.js` compiles SCSS and injects both `{% stylesheet %}` and `{% javascript %}` blocks.
+- Component `.js` files must be self-contained — no `import`/`export` (Shopify wraps in IIFE).
+- Vue components are the exception — they still go through Vite bundling (need module imports).
+- Vite no longer has component JS entries. Only `theme.js` and Vue entries remain.
+- All compiled output in `shopify/` is human-readable and editable by merchants.
+
+---
+
 *Add new ADRs below this line.*

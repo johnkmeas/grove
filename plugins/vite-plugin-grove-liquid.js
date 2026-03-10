@@ -7,26 +7,60 @@
  * - Copies .liquid files to shopify/sections/ or shopify/snippets/ based on component type
  */
 
-import { readFileSync, existsSync, mkdirSync, copyFileSync, writeFileSync } from 'fs'
+import { readFileSync, existsSync, mkdirSync, copyFileSync, writeFileSync, watch } from 'fs'
 import { resolve, dirname, basename, relative } from 'path'
 import { glob } from 'glob'
+import * as sass from 'sass'
 
 const SCHEMA_INJECT_COMMENT = '<!-- SCHEMA_INJECT -->'
 
 export default function grovePlugin(options = {}) {
   const { srcDir = 'src', outDir = 'shopify' } = options
+  let fsWatcherStarted = false
+  let debounceTimer = null
 
   return {
     name: 'vite-plugin-grove-liquid',
     apply: 'build',
 
     async buildStart() {
-      await processLiquidFiles(srcDir, outDir)
+      // Only register .liquid and .schema.json with Rollup's watcher.
+      // Do NOT register .js or .scss — Vite treats watched .js files as
+      // modules, which disrupts the build when they change.
+      const srcPath = resolve(process.cwd(), srcDir)
+      const watchFiles = await glob(`${srcPath}/**/*.{liquid,schema.json}`)
+      for (const file of watchFiles) {
+        this.addWatchFile(file)
+      }
     },
 
-    async watchChange(id) {
-      if (id.endsWith('.liquid') || id.endsWith('.schema.json')) {
-        await processLiquidFiles(srcDir, outDir)
+    async writeBundle() {
+      // Run AFTER Vite writes its own assets, so our output is never overwritten
+      await processLiquidFiles(srcDir, outDir)
+
+      // Set up a separate fs watcher for .scss and .js files.
+      // These don't go through Vite's pipeline — the plugin reads them
+      // directly — so they need their own watcher to trigger rebuilds.
+      // unref() allows the process to exit naturally for one-shot builds
+      // while keeping the watcher alive during watch mode.
+      if (!fsWatcherStarted) {
+        fsWatcherStarted = true
+        const srcPath = resolve(process.cwd(), srcDir)
+        const dirsToWatch = [resolve(srcPath, 'components'), resolve(srcPath, 'blocks')]
+
+        for (const dir of dirsToWatch) {
+          if (!existsSync(dir)) continue
+          const watcher = watch(dir, { recursive: true }, (eventType, filename) => {
+            if (filename && (filename.endsWith('.scss') || filename.endsWith('.js'))) {
+              // Debounce to avoid rapid-fire rebuilds from editor save events
+              clearTimeout(debounceTimer)
+              debounceTimer = setTimeout(() => {
+                processLiquidFiles(srcDir, outDir)
+              }, 100)
+            }
+          })
+          watcher.unref()
+        }
       }
     },
   }
@@ -47,6 +81,33 @@ async function processLiquidFiles(srcDir, outDir) {
 
     const schemaFile = resolve(componentDir, `${componentName}.schema.json`)
     let liquidContent = readFileSync(liquidFile, 'utf-8')
+
+    // Compile SCSS and inject {% stylesheet %} block
+    const scssFile = resolve(componentDir, `${componentName}.scss`)
+    if (existsSync(scssFile)) {
+      const result = sass.compile(scssFile, {
+        style: 'expanded',
+        loadPaths: [resolve(process.cwd(), srcDir)],
+      })
+      const stylesheetBlock = `{% stylesheet %}\n${result.css}\n{% endstylesheet %}`
+      if (liquidContent.includes(SCHEMA_INJECT_COMMENT)) {
+        liquidContent = liquidContent.replace(SCHEMA_INJECT_COMMENT, `${stylesheetBlock}\n\n${SCHEMA_INJECT_COMMENT}`)
+      } else {
+        liquidContent = `${liquidContent}\n\n${stylesheetBlock}`
+      }
+    }
+
+    // Inject JS as {% javascript %} block
+    const jsFile = resolve(componentDir, `${componentName}.js`)
+    if (existsSync(jsFile)) {
+      const jsContent = readFileSync(jsFile, 'utf-8')
+      const javascriptBlock = `{% javascript %}\n${jsContent}\n{% endjavascript %}`
+      if (liquidContent.includes(SCHEMA_INJECT_COMMENT)) {
+        liquidContent = liquidContent.replace(SCHEMA_INJECT_COMMENT, `${javascriptBlock}\n\n${SCHEMA_INJECT_COMMENT}`)
+      } else {
+        liquidContent = `${liquidContent}\n\n${javascriptBlock}`
+      }
+    }
 
     // Inject schema if schema file exists
     if (existsSync(schemaFile)) {
@@ -81,6 +142,21 @@ async function processLiquidFiles(srcDir, outDir) {
 
     const schemaFile = resolve(blockDir, `${blockName}.schema.json`)
     let liquidContent = readFileSync(liquidFile, 'utf-8')
+
+    // Compile SCSS and inject {% stylesheet %} block
+    const scssFile = resolve(blockDir, `${blockName}.scss`)
+    if (existsSync(scssFile)) {
+      const result = sass.compile(scssFile, {
+        style: 'expanded',
+        loadPaths: [resolve(process.cwd(), srcDir)],
+      })
+      const stylesheetBlock = `{% stylesheet %}\n${result.css}\n{% endstylesheet %}`
+      if (liquidContent.includes(SCHEMA_INJECT_COMMENT)) {
+        liquidContent = liquidContent.replace(SCHEMA_INJECT_COMMENT, `${stylesheetBlock}\n\n${SCHEMA_INJECT_COMMENT}`)
+      } else {
+        liquidContent = `${liquidContent}\n\n${stylesheetBlock}`
+      }
+    }
 
     // Inject schema if schema file exists
     if (existsSync(schemaFile)) {

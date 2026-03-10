@@ -104,4 +104,34 @@ Key facts: `@theme` is NOT mandatory for targeting. Underscore prefix is NOT man
 
 ---
 
+### 10 — Using `export` or `import` in Component JS
+
+**What happens:** Agent writes `export { MyClass }` or `import ... from '...'` in a component's `.js` file. Shopify's `{% javascript %}` tag wraps code in an IIFE `(function() { ... })();`, so ES module syntax is invalid.
+
+**Result:** Runtime error: `Uncaught SyntaxError: Unexpected token 'export'`.
+
+**Prevention:** Component JS must be self-contained with no `import` or `export` statements. Classes self-initialize at the bottom (e.g. `document.querySelectorAll('.hero').forEach(...)`). If a component needs module imports, it must use Vue (`"js": "vue"` in registry) which is bundled by Vite.
+
+---
+
+### 11 — Creating Subdirectories in `shopify/assets/`
+
+**What happens:** Agent configures Vite entry keys with slashes (e.g. `components/hero`) which creates nested output like `shopify/assets/components/hero.js`. Shopify requires all assets in a flat directory.
+
+**Result:** Asset files are not accessible via `{{ 'file.js' | asset_url }}`. Shopify CLI may fail to upload them.
+
+**Prevention:** Never use `/` in Vite entry keys. Use flat names like `component-hero` → outputs `shopify/assets/component-hero.js`. However, vanilla JS components should not be in Vite at all — they are injected via `{% javascript %}` by the build plugin.
+
+---
+
+### 12 — Minifying Compiled Output for Theme Store Themes
+
+**What happens:** Agent uses `style: 'compressed'` for SCSS or leaves Vite's default `minify: true`. The compiled output in `shopify/` is unreadable.
+
+**Result:** Theme store review rejection. Merchants cannot read or edit the theme code.
+
+**Prevention:** All compiled output must be human-readable. SCSS uses `style: 'expanded'`. Vite uses `minify: false`. This applies to everything in `shopify/` — sections, blocks, assets.
+
+---
+
 *Add new failure patterns below this line.*

@@ -53,4 +53,4 @@ document.querySelectorAll('.hero').forEach((el) => {
   new HeroSection(el)
 })
 
-export { HeroSection }
+console.log('test hero.js')

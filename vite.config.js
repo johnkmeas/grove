@@ -8,26 +8,14 @@ import grovePlugin from './plugins/vite-plugin-grove-liquid.js'
 function getComponentEntries() {
   const entries = {}
 
-  // Vanilla JS components
-  const jsFiles = glob.sync('src/components/*/!(*.test).js')
-  for (const file of jsFiles) {
-    const match = file.match(/src\/components\/([^/]+)\/[^/]+\.js$/)
-    if (match) {
-      const name = match[1]
-      if (!name.startsWith('_')) {
-        entries[`components/${name}`] = resolve(process.cwd(), file)
-      }
-    }
-  }
-
-  // Vue island components
+  // Vue island components (vanilla JS is handled by the Liquid plugin via {% javascript %})
   const vueFiles = glob.sync('src/components/*/*.vue')
   for (const file of vueFiles) {
     const match = file.match(/src\/components\/([^/]+)\/[^/]+\.vue$/)
     if (match) {
       const name = match[1]
       if (!name.startsWith('_')) {
-        entries[`components/${name}-vue`] = resolve(process.cwd(), file)
+        entries[`component-${name}-vue`] = resolve(process.cwd(), file)
       }
     }
   }
@@ -48,7 +36,8 @@ export default defineConfig(() => {
     build: {
       outDir: 'shopify/assets',
       emptyOutDir: false,
-      manifest: true,
+      manifest: false,
+      minify: false,
       rollupOptions: {
         input: {
           // Main theme entry

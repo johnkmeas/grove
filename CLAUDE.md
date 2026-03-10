@@ -1,6 +1,6 @@
 # Grove — Agent Context
 
-**Stack:** Liquid, vanilla JS (ES modules), nested BEM SCSS, Vue 3 islands, Shopify CLI, Vite
+**Stack:** Liquid, vanilla JS, nested BEM SCSS, Vue 3 islands, Shopify CLI, Vite
 
 ## Rules
 
@@ -10,6 +10,8 @@
 - **BEM always nested.** Never write `.block__element` as a top-level selector.
 - **Max snippet nesting: 1 level** per component.
 - **Vue only** in components marked `"js": "vue"` in `registry.json`.
+- **No `import`/`export` in component JS.** Shopify's `{% javascript %}` wraps code in an IIFE. Component JS must be self-contained and self-initializing.
+- **All compiled output must be human-readable.** No minification — theme store requirement. SCSS: `expanded`, Vite: `minify: false`.
 - `src/templates/` and `src/config/` are **read-only** unless you are the `template-composer` or `theme-settings` agent.
 - **Theme blocks use `block.settings`**, not `section.settings`. Blocks have no access to section scope.
 - **Snippets in blocks must be fully parameterized** — pass all values explicitly via `{% render %}`. No reliance on ambient variables.
