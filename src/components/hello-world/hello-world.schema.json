@@ -1,0 +1,11 @@
+{
+  "_version": "1.0.0",
+  "name": "Hello World",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Hello World Template",
+      "category": "Demo"
+    }
+  ]
+}

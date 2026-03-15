@@ -53,6 +53,7 @@ const VALID_FIELD_TYPES = new Set([
   'metaobject_list',
   'header',
   'paragraph',
+  'text_alignment',
 ])
 
 const errors = []

@@ -1,0 +1,14 @@
+{
+  "type": "footer",
+  "name": "t:general.footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "menu": "",
+        "show_payment_icons": true
+      }
+    }
+  },
+  "order": ["footer"]
+}

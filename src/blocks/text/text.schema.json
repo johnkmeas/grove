@@ -1,27 +1,30 @@
 {
   "_version": "1.0.0",
-  "name": "Text",
-  "tag": null,
+  "name": "t:general.text",
   "settings": [
     {
-      "type": "richtext",
+      "type": "text",
       "id": "text",
-      "label": "Text",
-      "default": "<p>Add your text here</p>"
+      "label": "t:labels.text",
+      "default": "Text"
     },
     {
       "type": "select",
-      "id": "size",
-      "label": "Size",
+      "id": "text_style",
+      "label": "t:labels.text_style",
       "options": [
-        { "value": "sm", "label": "Small" },
-        { "value": "md", "label": "Medium" },
-        { "value": "lg", "label": "Large" }
+        { "value": "text--title", "label": "t:options.text_style.title" },
+        { "value": "text--subtitle", "label": "t:options.text_style.subtitle" },
+        { "value": "text--normal", "label": "t:options.text_style.normal" }
       ],
-      "default": "md"
+      "default": "text--title"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "t:labels.alignment",
+      "default": "left"
     }
   ],
-  "presets": [
-    { "name": "Text" }
-  ]
+  "presets": [{ "name": "t:general.text" }]
 }

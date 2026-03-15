@@ -91,7 +91,7 @@
     "comment-empty-line-before": null,
     "no-descending-specificity": null,
     "scss/dollar-variable-pattern": "^[a-z][a-z0-9-]*$",
-    "custom-property-pattern": "^grove-.+$",
+    "custom-property-pattern": null,
     "color-no-invalid-hex": true,
     "unit-no-unknown": true,
     "property-no-unknown": true,

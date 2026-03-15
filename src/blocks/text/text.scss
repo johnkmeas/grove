@@ -1,16 +1,12 @@
-// Text Block
-// Scoped nested BEM styles — all values via design tokens
+.text {
+  text-align: var(--text-align);
 
-.grove-text {
-  &--sm {
-    font-size: var(--grove-typography-body-sm);
+  &--title {
+    font-size: 2rem;
+    font-weight: 700;
   }
 
-  &--md {
-    font-size: var(--grove-typography-body-md);
-  }
-
-  &--lg {
-    font-size: var(--grove-typography-body-lg);
+  &--subtitle {
+    font-size: 1.5rem;
   }
 }

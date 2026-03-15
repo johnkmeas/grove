@@ -1,0 +1,10 @@
+.search-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+  .prev,
+  .page,
+  .next {
+    grid-column: 1 / -1;
+  }
+}

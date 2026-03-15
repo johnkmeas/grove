@@ -218,4 +218,21 @@ async function processLiquidFiles(srcDir, outDir) {
     mkdirSync(localesDir, { recursive: true })
     copyFileSync(localeFile, resolve(localesDir, basename(localeFile)))
   }
+
+  // Process section groups (src/section-groups/*.json → shopify/sections/*.json)
+  const sectionGroupsPath = resolve(process.cwd(), 'src/section-groups')
+  const sectionGroupFiles = await glob(`${sectionGroupsPath}/*.json`)
+  for (const groupFile of sectionGroupFiles) {
+    const sectionsDir = resolve(outPath, 'sections')
+    mkdirSync(sectionsDir, { recursive: true })
+    copyFileSync(groupFile, resolve(sectionsDir, basename(groupFile)))
+  }
+
+  // Process static assets (src/assets/* → shopify/assets/*)
+  const staticAssets = await glob(`${srcPath}/assets/*`)
+  for (const assetFile of staticAssets) {
+    const assetsDir = resolve(outPath, 'assets')
+    mkdirSync(assetsDir, { recursive: true })
+    copyFileSync(assetFile, resolve(assetsDir, basename(assetFile)))
+  }
 }

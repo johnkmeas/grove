@@ -1,40 +1,9 @@
 {
   "sections": {
-    "hero": {
-      "type": "hero",
-      "settings": {
-        "media_type": "image",
-        "content_position": "middle-center",
-        "content_alignment": "center",
-        "height": "large",
-        "overlay_opacity": 40
-      },
-      "blocks": {
-        "heading_1": {
-          "type": "heading",
-          "settings": {
-            "text": "Discover something new",
-            "heading_tag": "h2",
-            "size": "xl"
-          }
-        },
-        "text_1": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Shop our latest collection</p>",
-            "size": "md"
-          }
-        },
-        "button_1": {
-          "type": "button",
-          "settings": {
-            "label": "Shop now",
-            "style": "primary"
-          }
-        }
-      },
-      "block_order": ["heading_1", "text_1", "button_1"]
+    "main": {
+      "type": "hello-world",
+      "settings": {}
     }
   },
-  "order": ["hero"]
+  "order": ["main"]
 }
