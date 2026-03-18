@@ -43,7 +43,7 @@ export default function grovePlugin(options = {}) {
       // directly — so they need their own watcher to trigger rebuilds.
       // unref() allows the process to exit naturally for one-shot builds
       // while keeping the watcher alive during watch mode.
-      if (!fsWatcherStarted) {
+      if (!fsWatcherStarted && !process.env.CI) {
         fsWatcherStarted = true
         const srcPath = resolve(process.cwd(), srcDir)
         const dirsToWatch = [resolve(srcPath, 'components'), resolve(srcPath, 'blocks')]
