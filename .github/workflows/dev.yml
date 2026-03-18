@@ -12,6 +12,7 @@ on:
 
 jobs:
   build-and-deploy:
+    timeout-minutes: 15
     name: Build and deploy to dev theme
     runs-on: ubuntu-latest
     permissions:
