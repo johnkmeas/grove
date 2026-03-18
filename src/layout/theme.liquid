@@ -1,57 +1,37 @@
 <!doctype html>
 <html lang="{{ request.locale.iso_code }}">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="">
+    {% # Inlined CSS Variables %}
+    {% render 'css-variables' %}
 
-    {%- if settings.favicon != blank -%}
-      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
-    {%- endif -%}
+    {% comment %}
+      Font preloading:
+      1. Preconnect to font CDN for faster connection
+      2. Preload only the critical font variant (base weight)
+      3. Additional variants load on-demand via @font-face
+    {% endcomment %}
+    {% unless settings.type_primary_font.system? %}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
 
-    <title>
-      {%- if request.page_type == 'index' -%}
-        {{ page_title }}
-        {%- if current_tags -%} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{%- endif -%}
-      {%- else -%}
-        {{ page_title }}
-        {%- if current_tags -%} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{%- endif -%}
-        &ndash; {{ shop.name }}
-      {%- endif -%}
-    </title>
+      {% comment %} Preload the base font variant for initial page render {% endcomment %}
+      {{ settings.type_primary_font | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
+    {% endunless %}
 
-    {%- if page_description -%}
-      <meta name="description" content="{{ page_description | escape }}">
-    {%- endif -%}
+    {% # Load and preload the critical CSS %}
+    {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}
 
-    {%- render 'meta-tags' -%}
+    {% # Social, title, etc. %}
+    {% render 'meta-tags' %}
 
     {{ content_for_header }}
-
-    {%- comment -%} Design tokens — generated from src/tokens/ {%- endcomment -%}
-    {{ 'tokens.css' | asset_url | stylesheet_tag }}
-
-    {%- comment -%} Global theme styles {%- endcomment -%}
-    {{ 'theme.css' | asset_url | stylesheet_tag }}
   </head>
 
-  <body class="template-{{ request.page_type }}">
-    <a class="skip-to-content-link button visually-hidden" href="#MainContent">
-      {{ 'accessibility.skip_to_content' | t }}
-    </a>
+  <body>
+    {% sections 'header-group' %}
 
-    {%- sections 'header-group' -%}
+    {{ content_for_layout }}
 
-    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
-      {{ content_for_layout }}
-    </main>
-
-    {%- sections 'footer-group' -%}
-
-    {%- comment -%} Global JS {%- endcomment -%}
-    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
-
-    {%- comment -%} Cart drawer mount point {%- endcomment -%}
-    <div id="grove-cart-drawer" aria-hidden="true"></div>
+    {% sections 'footer-group' %}
   </body>
 </html>

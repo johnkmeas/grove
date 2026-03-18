@@ -1,0 +1,19 @@
+.collections {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(var(--collection-card-size), 100%), 1fr));
+  gap: var(--grid-gap);
+
+  &--compact {
+    --collection-card-size: 160px;
+  }
+
+  &--full {
+    --collection-card-size: 280px;
+  }
+}
+
+.collection-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}

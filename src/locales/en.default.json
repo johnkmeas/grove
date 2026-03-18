@@ -1,19 +1,117 @@
 {
-  "general": {
-    "meta": {
-      "tags": "Tagged with {{ tags }}"
+  "404": {
+    "title": "404",
+    "not_found": "Page not found.",
+    "back_to_shopping": "Back to shopping"
+  },
+  "blog": {
+    "article_comments": "Comments",
+    "article_metadata_html": "{{ date }} by {{ author }}",
+    "comment_form_body": "Comment",
+    "comment_form_email": "Email",
+    "comment_form_name": "Name",
+    "comment_form_submit": "Post",
+    "comment_form_title": "Add a comment"
+  },
+  "cart": {
+    "checkout": "Checkout",
+    "title": "Cart",
+    "update": "Update",
+    "remove": "Remove"
+  },
+  "customers": {
+    "login": {
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "title": "Login"
     }
   },
-  "gift_cards": {
-    "heading": "Here's your gift card!",
-    "expired": "Expired",
-    "initial_value": "Initial value:",
-    "code_label": "Gift card code",
-    "copy_code": "Copy code",
-    "expires_on": "Expires on {{ date }}",
-    "expired_on": "Expired on {{ date }}",
+  "collections": {
+    "title": "Collections"
+  },
+  "gift_card": {
     "add_to_apple_wallet": "Add to Apple Wallet",
-    "shop_link": "Continue shopping",
-    "print": "Print gift card"
+    "card": "Gift card",
+    "expired": "This gift card has expired",
+    "expires_on": "Expires on {{ expires_on }}",
+    "use_at_checkout": "Use this gift card at checkout"
+  },
+  "password": {
+    "title": "This shop is private",
+    "password": "Password",
+    "enter": "Enter"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search articles, pages, or products",
+    "submit": "Search",
+    "no_results_html": "No results found for {{ terms }}",
+    "results_for_html": "{{ count }} results found for {{ terms }}"
+  },
+  "general": {
+    "header": "Header",
+    "footer": "Footer",
+    "product": "Product",
+    "collection": "Collection",
+    "collections_grid": "Collections grid",
+    "cart": "Cart",
+    "article": "Article",
+    "blog": "Blog",
+    "page": "Page",
+    "search": "Search",
+    "404": "404",
+    "password": "Password",
+    "custom_section": "Custom section",
+    "text": "Text",
+    "group": "Group",
+    "column": "Column",
+    "row": "Row",
+    "layout": "Layout",
+    "typography": "Typography",
+    "fonts": "Fonts",
+    "primary": "Primary",
+    "colors": "Colors"
+  },
+  "labels": {
+    "menu": "Menu",
+    "customer_account_menu": "Customer account menu",
+    "show_payment_icons": "Show payment icons",
+    "grid_item_width": "Grid item width",
+    "grid_gap": "Grid gap",
+    "text": "Text",
+    "text_style": "Text style",
+    "alignment": "Alignment",
+    "layout_direction": "Layout direction",
+    "padding": "Padding",
+    "background": "Background",
+    "foreground": "Foreground",
+    "page_width": "Page width",
+    "page_margin": "Page margin",
+    "input_corner_radius": "Input corner radius"
+  },
+  "options": {
+    "size": {
+      "small": "Small",
+      "large": "Large"
+    },
+    "text_style": {
+      "title": "Title",
+      "subtitle": "Subtitle",
+      "normal": "Normal"
+    },
+    "direction": {
+      "horizontal": "Horizontal",
+      "vertical": "Vertical"
+    },
+    "alignment": {
+      "left": "Left",
+      "center": "Center",
+      "right": "Right"
+    },
+    "page_width": {
+      "narrow": "Narrow",
+      "wide": "Wide"
+    }
   }
 }

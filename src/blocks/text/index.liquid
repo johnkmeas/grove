@@ -1,5 +1,13 @@
+{% doc %}
+  Renders a text block.
+
+  @example
+  {% content_for 'block', type: 'text', id: 'text' %}
+{% enddoc %}
+
 <div
-  class="grove-text grove-text--{{ block.settings.size | default: 'md' }}"
+  class="text {{ block.settings.text_style }}"
+  style="--text-align: {{ block.settings.alignment }}"
   {{ block.shopify_attributes }}
 >
   {{ block.settings.text }}

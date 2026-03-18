@@ -1,0 +1,16 @@
+footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+
+  a {
+    color: var(--color-foreground);
+    text-decoration: none;
+  }
+
+  .footer__links,
+  .footer__payment {
+    display: flex;
+    gap: 1rem;
+  }
+}

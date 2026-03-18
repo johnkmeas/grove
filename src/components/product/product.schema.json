@@ -1,0 +1,8 @@
+{
+  "_version": "1.0.0",
+  "name": "t:general.product",
+  "settings": [],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}

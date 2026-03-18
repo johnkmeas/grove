@@ -8,176 +8,75 @@
     "theme_support_url": "https://github.com/grove/grove/issues"
   },
   {
-    "name": "Colors",
+    "name": "t:general.typography",
     "settings": [
       {
-        "type": "color_scheme_group",
-        "id": "color_schemes",
-        "definition": [
+        "type": "header",
+        "content": "t:general.fonts"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_primary_font",
+        "default": "work_sans_n4",
+        "label": "t:general.primary"
+      }
+    ]
+  },
+  {
+    "name": "t:general.layout",
+    "settings": [
+      {
+        "type": "select",
+        "id": "max_page_width",
+        "label": "t:labels.page_width",
+        "options": [
           {
-            "type": "color",
-            "id": "background",
-            "label": "Background colour",
-            "default": "#ffffff"
+            "value": "90rem",
+            "label": "t:options.page_width.narrow"
           },
           {
-            "type": "color_background",
-            "id": "background_gradient",
-            "label": "Background gradient"
-          },
-          {
-            "type": "color",
-            "id": "text",
-            "label": "Text colour",
-            "default": "#1a1a1a"
-          },
-          {
-            "type": "color",
-            "id": "button",
-            "label": "Primary button background",
-            "default": "#1a1a1a"
-          },
-          {
-            "type": "color",
-            "id": "button_label",
-            "label": "Primary button label",
-            "default": "#ffffff"
-          },
-          {
-            "type": "color",
-            "id": "secondary_button_label",
-            "label": "Secondary button label",
-            "default": "#1a1a1a"
-          },
-          {
-            "type": "color",
-            "id": "shadow",
-            "label": "Shadow",
-            "default": "#1a1a1a"
+            "value": "110rem",
+            "label": "t:options.page_width.wide"
           }
         ],
-        "role": {
-          "text": "text",
-          "background": {
-            "solid": "background",
-            "gradient": "background_gradient"
-          },
-          "links": "secondary_button_label",
-          "icons": "text",
-          "primary_button": "button",
-          "on_primary_button": "button_label",
-          "primary_button_border": "button",
-          "secondary_button": "background",
-          "on_secondary_button": "secondary_button_label",
-          "secondary_button_border": "secondary_button_label"
-        }
-      }
-    ]
-  },
-  {
-    "name": "Typography",
-    "settings": [
-      {
-        "type": "font_picker",
-        "id": "heading_font",
-        "label": "Heading font",
-        "default": "sans-serif"
-      },
-      {
-        "type": "font_picker",
-        "id": "body_font",
-        "label": "Body font",
-        "default": "sans-serif"
+        "default": "90rem"
       },
       {
         "type": "range",
-        "id": "heading_scale",
-        "label": "Heading scale",
-        "min": 100,
-        "max": 150,
-        "step": 5,
-        "unit": "%",
-        "default": 100
-      },
-      {
-        "type": "range",
-        "id": "body_scale",
-        "label": "Body font scale",
-        "min": 75,
-        "max": 130,
-        "step": 5,
-        "unit": "%",
-        "default": 100
-      }
-    ]
-  },
-  {
-    "name": "Layout",
-    "settings": [
-      {
-        "type": "range",
-        "id": "page_width",
-        "label": "Page width",
-        "min": 1000,
-        "max": 1600,
-        "step": 100,
-        "unit": "px",
-        "default": 1200
-      },
-      {
-        "type": "range",
-        "id": "spacing_sections",
-        "label": "Section spacing",
-        "min": 0,
+        "id": "min_page_margin",
+        "min": 10,
         "max": 100,
-        "step": 4,
+        "step": 1,
         "unit": "px",
-        "default": 36
+        "label": "t:labels.page_margin",
+        "default": 20
       }
     ]
   },
   {
-    "name": "Buttons",
+    "name": "t:general.colors",
     "settings": [
+      {
+        "type": "color",
+        "id": "background_color",
+        "default": "#FFFFFF",
+        "label": "t:labels.background"
+      },
+      {
+        "type": "color",
+        "id": "foreground_color",
+        "default": "#333333",
+        "label": "t:labels.foreground"
+      },
       {
         "type": "range",
-        "id": "button_border_radius",
-        "label": "Button corner radius",
+        "id": "input_corner_radius",
         "min": 0,
-        "max": 40,
-        "step": 2,
+        "max": 10,
+        "step": 1,
         "unit": "px",
+        "label": "t:labels.input_corner_radius",
         "default": 4
-      }
-    ]
-  },
-  {
-    "name": "Social media",
-    "settings": [
-      {
-        "type": "text",
-        "id": "social_instagram_link",
-        "label": "Instagram URL"
-      },
-      {
-        "type": "text",
-        "id": "social_tiktok_link",
-        "label": "TikTok URL"
-      },
-      {
-        "type": "text",
-        "id": "social_facebook_link",
-        "label": "Facebook URL"
-      },
-      {
-        "type": "text",
-        "id": "social_pinterest_link",
-        "label": "Pinterest URL"
-      },
-      {
-        "type": "text",
-        "id": "social_youtube_link",
-        "label": "YouTube URL"
       }
     ]
   }

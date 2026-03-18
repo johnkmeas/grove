@@ -53,6 +53,7 @@ const VALID_FIELD_TYPES = new Set([
   'metaobject_list',
   'header',
   'paragraph',
+  'text_alignment',
 ])
 
 const errors = []
@@ -245,7 +246,12 @@ async function run() {
   let filesToValidate = specificFiles
 
   if (filesToValidate.length === 0) {
-    filesToValidate = await glob(`${ROOT}/src/**/*.schema.json`)
+    filesToValidate = await glob(`${ROOT}/src/**/*.schema.json`, {
+      ignore: [`${ROOT}/src/locales/**`],
+    })
+  } else {
+    // Filter out locale files from explicit file lists (e.g. lint-staged)
+    filesToValidate = filesToValidate.filter((f) => !f.includes('/locales/'))
   }
 
   if (filesToValidate.length === 0) {

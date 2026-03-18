@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite build --watch & shopify theme dev --path shopify --environment development",
-    "build": "node scripts/generate-tokens.js && vite build",
+    "build": "vite build",
     "build:preset": "node scripts/generate-tokens.js --preset $npm_config_preset && vite build --mode $npm_config_preset",
     "lint": "pnpm lint:js && pnpm lint:scss && pnpm lint:liquid",
     "lint:js": "eslint 'src/**/*.{js,vue}'",

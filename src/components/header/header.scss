@@ -1,0 +1,32 @@
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 5rem;
+
+  a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-foreground);
+    text-decoration: none;
+  }
+
+  a sup {
+    position: absolute;
+    left: 100%;
+    max-width: var(--page-margin);
+    overflow: hidden;
+  }
+
+  svg {
+    width: 2rem;
+  }
+
+  .header__menu,
+  .header__icons {
+    display: flex;
+    gap: 1rem;
+  }
+}
