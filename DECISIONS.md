@@ -188,4 +188,39 @@ Component CSS was never compiled (SCSS files existed but were not imported), JS 
 
 ---
 
+## ADR-007 — Skeleton Theme Migration
+
+**Date:** 2026-03-15
+**Status:** Accepted
+
+### Context
+
+Shopify updated Theme Store requirements (effective May 15, 2025): the Skeleton theme is now the only approved codebase for new Theme Store submissions. Themes built on or derived from Dawn or Horizon are no longer eligible. Grove's original custom components needed to be replaced with Skeleton-based patterns to ensure theme store eligibility.
+
+### Decisions
+
+| Decision | Choice | Reason |
+|---|---|---|
+| Base theme | Shopify Skeleton theme | Only approved codebase for new submissions |
+| Migration strategy | Full replacement | Clean slate using Skeleton patterns, no Dawn/Horizon remnants |
+| Component structure | Keep Grove's co-located `src/` pattern | Skeleton provides patterns; Grove provides build pipeline |
+| Design authority | Merchant settings + presets | All visual customisation via theme editor, not hardcoded |
+| Hero component | Replaced with header + hello-world | Skeleton patterns preferred over custom hero |
+| Performance targets | Lighthouse perf 60+, a11y 90+ | Aligned with actual Shopify Theme Store minimums |
+| JS bundle size | 16KB minified maximum | Shopify Theme Store requirement |
+| Preset limit | Max 5 presets | Shopify Theme Store limit |
+| Listings folder | `/listings/[preset]/` in theme zip | Required for multi-preset submissions (effective May 2025) |
+
+### Consequences
+
+- All 14 base sections now follow Skeleton theme patterns.
+- Performance budget updated: Lighthouse perf 60+ (not 90+), a11y 90+ (not 95+).
+- JS bundle budget reduced from 80KB total to 16KB minified.
+- Theme zip must include `/listings` folder for multi-preset themes.
+- Demo stores must match preset industry/catalog tags.
+- No app-dependent features, no deceptive patterns (fake countdowns, stock levels).
+- Dawn/Horizon patterns must not be reintroduced.
+
+---
+
 *Add new ADRs below this line.*
