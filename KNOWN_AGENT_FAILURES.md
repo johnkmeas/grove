@@ -134,4 +134,44 @@ Key facts: `@theme` is NOT mandatory for targeting. Underscore prefix is NOT man
 
 ---
 
+### 13 — Using Dawn/Horizon Patterns in New Code
+
+**What happens:** Agent copies or derives code from Shopify Dawn or Horizon themes when building new sections or components.
+
+**Result:** Theme store rejection. As of May 2025, themes built on or derived from Dawn or Horizon are NOT eligible for the Shopify Theme Store. Only the Skeleton theme is the approved codebase.
+
+**Prevention:** All new code must follow Skeleton theme patterns. Check existing `src/components/` for established patterns. When in doubt, reference the [Skeleton theme repo](https://github.com/Shopify/skeleton-theme).
+
+---
+
+### 14 — Hardcoding Visual Design Instead of Using Settings
+
+**What happens:** Agent hardcodes colours, fonts, spacing, or layout choices directly in SCSS or Liquid instead of exposing them as section/block settings that merchants can edit.
+
+**Result:** Merchants cannot customise the theme's appearance through the theme editor. Theme store reviewers expect all visual design to be merchant-configurable.
+
+**Prevention:** All visual design choices (colours, fonts, spacing, layout variants) must come from `section.settings`, `block.settings`, or global theme settings. Expose `color_scheme` settings tied to preset colours. Use CSS custom properties from `css-variables.liquid` for global values.
+
+---
+
+### 15 — Adding App-Like Features or Deceptive Patterns
+
+**What happens:** Agent implements wishlists, appointment scheduling, cart-level discount codes, Instagram feeds, fake countdown timers, fake stock levels, or fake viewer counts.
+
+**Result:** Theme store rejection. These are explicitly prohibited by Shopify Theme Store requirements.
+
+**Prevention:** Never build app-dependent features. Never implement deceptive urgency/scarcity tactics. If the feature requires API access or resembles an app, it doesn't belong in the theme.
+
+---
+
+### 16 — Navigation or Product Form Breaks Without JavaScript
+
+**What happens:** Agent builds navigation menus or product forms that are entirely JavaScript-dependent with no fallback.
+
+**Result:** Theme store rejection. Shopify requires navigation elements and the product form to work without JavaScript.
+
+**Prevention:** Build navigation with native HTML (`<details>`, `<a>` tags). Product forms must be standard `<form>` submissions. JavaScript should enhance, not replace, core functionality.
+
+---
+
 *Add new failure patterns below this line.*

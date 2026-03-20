@@ -1,14 +1,21 @@
 {
   "lighthouse": {
-    "performance": 90,
-    "accessibility": 95,
+    "performance": 60,
+    "accessibility": 90,
     "best-practices": 90,
     "seo": 90
   },
   "bundleSize": {
+    "totalJSMinified": "16kb",
     "totalCSS": "50kb",
-    "totalJS": "80kb",
     "perComponentJS": "15kb",
     "perBlockCSS": "2kb"
+  },
+  "notes": {
+    "source": "Shopify Theme Store requirements (May 2025)",
+    "performanceNote": "60+ minimum averaged across product, collection, and home pages (desktop + mobile)",
+    "accessibilityNote": "90+ minimum averaged across product, collection, and home pages (desktop + mobile)",
+    "jsNote": "16KB minified bundle maximum per Shopify Theme Store requirement",
+    "readability": "All compiled output must be human-readable (no minification) for theme store compliance"
   }
 }

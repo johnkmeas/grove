@@ -1,43 +1,77 @@
 # Reference Components
 
-These components demonstrate every Grove pattern. They are the canonical examples for agent authoring.
+Grove is built on the Shopify Skeleton theme. Components follow Skeleton patterns and expose all design choices as merchant-editable settings.
 
-## Component Library
+## Current Components (Skeleton Base)
 
-| Component | JS | Complexity | Demonstrates |
+These sections were migrated from the Skeleton theme and provide the essential page structure:
+
+| Component | Type | Status | Notes |
 |---|---|---|---|
-| `hero` | Vanilla | Medium | Image/video/colour modes, schema extraction, lazy-load, all tokens |
-| `announcement-bar` | Vanilla | Low | Minimal schema, section groups, translation filter |
-| `image-with-text` | Vanilla | Low | Layout variants, responsive images, token spacing |
-| `product-card` | Vanilla | Medium | Private snippets, price formatting, variant images, badges |
-| `collection-grid` | Vanilla | High | Pagination, app blocks, performance patterns |
-| `testimonials` | Vanilla | Medium | Repeating blocks schema, slider pattern |
-| `cart-drawer` | Vue | High | Vue island, reactive state, Shopify AJAX API |
-| `variant-picker` | Vue | High | Vue island, variant selection, inventory display |
-| `collection-filters` | Vue | High | Vue island, filter state, URL sync |
+| `header` | Section | ✅ Stable | Navigation, branding, account |
+| `footer` | Section | ✅ Stable | Copyright, links |
+| `product` | Section | ✅ Stable | Product detail page |
+| `collection` | Section | ✅ Stable | Collection listing |
+| `collections` | Section | ✅ Stable | List-collections page |
+| `cart` | Section | ✅ Stable | Shopping cart |
+| `article` | Section | ✅ Stable | Blog article |
+| `blog` | Section | ✅ Stable | Blog listing |
+| `page` | Section | ✅ Stable | Generic page |
+| `search` | Section | ✅ Stable | Search results |
+| `404` | Section | ✅ Stable | Not found page |
+| `password` | Section | ✅ Stable | Password-protected page |
+| `hello-world` | Section | ✅ Stable | Homepage demo |
+| `custom-section` | Section | ✅ Stable | Theme block container |
+| `text` | Block | ✅ Stable | Text with style options |
+| `group` | Block | ✅ Stable | Layout wrapper block |
 
-## Status
+## Planned Components (Phase 8)
 
-| Component | Status | Phase |
+These need to be built to create a complete, theme-store-ready theme:
+
+### Marketing Sections
+
+| Component | JS | Complexity | Key Patterns |
+|---|---|---|---|
+| `announcement-bar` | Vanilla | Low | Section groups, dismissible, auto-rotate |
+| `image-with-text` | Vanilla | Low | Layout variants, responsive images, CTA |
+| `slideshow` | Vanilla | Medium | Full-width media, overlay text, transitions |
+| `featured-collection` | Vanilla | Medium | Product grid, app blocks (`@app`) |
+| `featured-product` | Vanilla | Medium | Single product showcase, app blocks (`@app`) |
+| `rich-text` | Vanilla | Low | Formatted content |
+| `newsletter` | Vanilla | Low | Email signup form |
+| `video` | Vanilla | Low | Embedded/hosted video, poster image |
+| `collapsible-content` | Vanilla | Low | FAQ/accordion, `<details>` element |
+| `multicolumn` | Vanilla | Low | Flexible column layout |
+| `contact-form` | Vanilla | Low | Form with `autocomplete` attributes |
+| `custom-liquid` | None | Low | **Mandatory** for theme store |
+
+### Interactive Components (Vue 3 Islands)
+
+| Component | Complexity | Key Patterns |
 |---|---|---|
-| `hero` | ✅ Stable | Phase 1 |
-| `announcement-bar` | ⏳ Planned | Phase 8 |
-| `image-with-text` | ⏳ Planned | Phase 8 |
-| `product-card` | ⏳ Planned | Phase 8 |
-| `collection-grid` | ⏳ Planned | Phase 8 |
-| `testimonials` | ⏳ Planned | Phase 8 |
-| `cart-drawer` | ⏳ Planned | Phase 8 |
-| `variant-picker` | ⏳ Planned | Phase 8 |
-| `collection-filters` | ⏳ Planned | Phase 8 |
+| `cart-drawer` | High | Vue island, reactive state, Shopify AJAX API |
+| `variant-picker` | High | Vue island, variant selection, inventory |
+| `collection-filters` | High | Vue island, filter state, URL sync |
 
-## Hero
+### Theme Blocks
 
-The reference component for the full Grove pipeline. Demonstrates:
+| Block | Key Patterns |
+|---|---|
+| `heading` | Configurable heading level and style |
+| `button` | Primary/secondary/outline variants |
+| `image` | Responsive image with crop options |
+| `price` | Price formatting, compare-at, unit pricing |
+| `custom-liquid` | **Mandatory** for theme store |
 
-- Three media modes: image, video, colour background
-- Responsive image srcset via `_shared/image-srcset.liquid`
-- Schema extraction and `<!-- SCHEMA_INJECT -->` pattern
-- Vanilla JS for video autoplay with `prefers-reduced-motion` support
-- Full BEM nesting with token variables only
-- Content positioning via compound schema field split in Liquid
-- All available button styles (primary, secondary, outline)
+## Design Principles
+
+All components must follow these principles:
+
+1. **Merchant-controlled design** — All visual choices exposed as settings
+2. **Color scheme support** — Every section supports `color_scheme` setting
+3. **No JavaScript dependency** — Navigation and product forms work without JS
+4. **No app features** — No wishlists, scheduling, discount codes, Instagram
+5. **No deceptive patterns** — No fake countdowns, stock levels, or viewer counts
+6. **Skeleton patterns** — Follow Skeleton theme conventions, not Dawn/Horizon
+7. **Accessible** — 90+ Lighthouse a11y, keyboard navigable, proper contrast
