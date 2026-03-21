@@ -18,11 +18,11 @@
 
 ### 2 — Invented CSS Variable Names
 
-**What happens:** Agent writes `var(--grove-color-brand-primary)` when the actual token is `var(--grove-colors-primary)`. The variable doesn't exist so the value is empty/inherited.
+**What happens:** Agent writes a `var()` reference for a CSS custom property that doesn't exist (e.g. `var(--grove-color-brand-primary)` or `var(--spacing-xxl)`). The variable doesn't exist so the value is empty/inherited.
 
 **Result:** Silent visual regression. No error in console. Hard to debug.
 
-**Prevention:** Always check `src/tokens/base/` for exact token names before writing `var(--grove-*)`. Run `pnpm generate-tokens` and check `shopify/assets/tokens.css` for the full list.
+**Prevention:** All CSS custom properties are defined in `src/components/_shared/css-variables.liquid`. Check that file for exact variable names before using `var()`. There is no `--grove-*` namespace — it was removed (see ADR-008).
 
 ---
 

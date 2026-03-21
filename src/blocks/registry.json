@@ -4,13 +4,11 @@
     "status": "stable",
     "schemaVersion": "1.0.0",
     "reusableIn": ["custom-section"],
-    "tokens": []
   },
   "group": {
     "type": "block",
     "status": "stable",
     "schemaVersion": "1.0.0",
     "reusableIn": ["custom-section"],
-    "tokens": []
   }
 }

@@ -61,7 +61,6 @@ export default defineConfig(() => {
     resolve: {
       alias: {
         '@': resolve(process.cwd(), 'src'),
-        '@tokens': resolve(process.cwd(), 'src/tokens'),
         '@components': resolve(process.cwd(), 'src/components'),
       },
     },

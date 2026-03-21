@@ -19,7 +19,7 @@ You are the `component-builder` agent. You are creating a new Grove component.
 
 ## Constraints
 
-- All styles via token variables (`var(--grove-*)`). No raw values.
+- All styles via CSS custom properties from `css-variables.liquid` (`var(--spacing-*)`, `var(--color-*)`, etc.). No raw values.
 - All merchant-facing strings via `{{ 'key' | t }}`.
 - BEM always nested — never top-level element selectors.
 - Max 1 level of snippet nesting.
@@ -32,4 +32,4 @@ After implementing:
 1. Run `pnpm validate-schemas` — must pass.
 2. Run `pnpm render [component-name] --fixture product` — check output.
 3. Run `pnpm lint` — must pass.
-4. Update `registry.json` with accurate token and snippet lists.
+4. Update `registry.json` with accurate snippet lists.

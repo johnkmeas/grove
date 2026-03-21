@@ -9,7 +9,7 @@
 - **Work in `src/` only.** Never edit `shopify/` — it is a build artifact.
 - **Built on Skeleton theme.** Dawn/Horizon patterns are NOT eligible for Theme Store. Do not introduce them.
 - **Design is merchant-controlled.** All visual customisation (colours, fonts, spacing, layout) comes from theme settings and presets. Never hardcode visual design choices.
-- **All design values from `src/tokens/`.** Never hardcode colours, spacing, or type sizes in SCSS.
+- **All design values from CSS custom properties.** Use `var(--spacing-*)`, `var(--type-*)`, `var(--motion-*)`, `var(--radius-*)` from `css-variables.liquid`. Never hardcode spacing, type sizes, or motion values in SCSS.
 - **All merchant-facing strings via `{{ 'key' | t }}`.** Never hardcode text.
 - **BEM always nested.** Never write `.block__element` as a top-level selector.
 - **Max snippet nesting: 1 level** per component.
@@ -60,7 +60,6 @@ See `.performance-budget.json`. Targets aligned with Shopify Theme Store require
 | `component-builder` | Create and edit components in `src/components/[target]/` |
 | `block-builder` | Create and edit theme blocks in `src/blocks/[target]/` |
 | `schema-editor` | Edit `*.schema.json` only |
-| `token-manager` | Add and update tokens in `src/tokens/` |
 | `template-composer` | Compose page templates in `src/templates/` |
 | `theme-settings` | Edit global settings in `src/config/` |
 | `perf-auditor` | Review and flag performance/a11y issues |
@@ -69,7 +68,6 @@ See `.performance-budget.json`. Targets aligned with Shopify Theme Store require
 
 ```
 pnpm build                    # compile all
-pnpm generate-tokens          # regenerate tokens.css
 pnpm validate-schemas         # lint all *.schema.json
 pnpm new-component [name]     # scaffold a new section component
 pnpm new-component [name] --type block  # scaffold a new theme block

@@ -18,12 +18,7 @@
         "shopify/**"
       ]
     },
-    "token-manager": {
-      "description": "Add and update design tokens",
-      "allowGlobs": ["src/tokens/**", "src/presets/**"],
-      "denyGlobs": ["src/components/**", "shopify/**"]
-    },
-    "template-composer": {
+"template-composer": {
       "description": "Compose page templates",
       "allowGlobs": ["src/templates/**"],
       "denyGlobs": ["src/components/**", "src/config/**", "shopify/**"]
@@ -41,7 +36,7 @@
     }
   },
   "permissions": {
-    "allow": ["Read(src/**)", "Write(src/components/**)", "Write(src/tokens/**)"],
+    "allow": ["Read(src/**)", "Write(src/components/**)"],
     "deny": ["Write(shopify/**)", "Bash(rm -rf*)"]
   }
 }
