@@ -25,8 +25,8 @@ Design is merchant-driven: all visual customisation comes from **user-edited set
 | CSS delivery | `{% stylesheet %}` / `{% javascript %}` | Shopify-managed asset delivery, no manual `<script>` tags |
 | CI platform | GitHub Actions | Standard, Shopify CLI integrates cleanly |
 | Deploy target | CI pipeline only | `shopify/` gitignored, build artifact only |
-| Design tokens | JSON → CSS custom properties | Single source of truth, bridges theme settings and design tools |
-| Presets | Token override layers + `/listings` folder | One component library, many theme faces (max 5 presets) |
+| Design values | Static CSS custom properties in `css-variables.liquid` | No build pipeline; merchant settings for colours/fonts, static vars for spacing/motion/radii |
+| Presets | Shopify `settings_data.json` + `/listings` folder | One component library, many theme faces (max 5 presets) |
 | Theme store | Full compliance target | Skeleton base, Lighthouse 60+ perf / 90+ a11y, no app dependencies |
 | Design authority | Merchant settings + presets | All design comes from user-edited settings, not hardcoded values |
 
@@ -75,23 +75,23 @@ All essential page types render correctly using Skeleton-based sections.
 
 ---
 
-## Phase 3 — Design Token System + Performance Budget 🟡 IN PROGRESS
+## Phase 3 — Design Values + Performance Budget 🟡 IN PROGRESS
 
-**Goal:** Agents reference tokens only. Hardcoded values are a lint error. Performance targets match Shopify requirements.
+**Goal:** All design values come from CSS custom properties in `css-variables.liquid`. Hardcoded values are a lint error. Performance targets match Shopify requirements.
 
 ### Tasks
 
-- [x] Define initial token files: `colors.json`, `spacing.json`, `typography.json`, `motion.json`
-- [x] Build preset override system: `base/` + `themes/[preset]/` → merged `tokens.css`
+- [x] Define static CSS custom properties in `css-variables.liquid` for spacing, typography, motion, radii
+- [x] Remove unused token build pipeline (`src/tokens/`, `generate-tokens.js`) — see ADR-008
 - [x] Create `.performance-budget.json` aligned with Shopify Theme Store minimums
 - [x] Reference performance budget in root `CLAUDE.md`
 - [ ] Configure Stylelint rule to fail on raw hex/pixel values
-- [ ] Validate CSS variable names at build time — warn on references to unknown `--grove-*` vars
+- [ ] Validate CSS variable names at build time — warn on references to unknown variables
 - [ ] Add Shopify Lighthouse CI GitHub Action for automated perf/a11y checking
 - [ ] Add a11y section to component spec template
 
 ### Deliverable
-`tokens.css` auto-generated. Stylelint blocks raw values. Performance budget enforced in CI.
+`css-variables.liquid` is the single source for all CSS custom properties. Stylelint blocks raw values. Performance budget enforced in CI.
 
 ---
 
@@ -101,7 +101,7 @@ All essential page types render correctly using Skeleton-based sections.
 
 ### Tasks
 
-- [x] Write root `CLAUDE.md`, `src/components/CLAUDE.md`, `src/tokens/CLAUDE.md`
+- [x] Write root `CLAUDE.md`, `src/components/CLAUDE.md`
 - [x] Write `KNOWN_AGENT_FAILURES.md` with failure patterns (12 documented)
 - [x] Write all prompt templates in `docs/prompts/`
 - [x] Write all agent role definitions in `docs/agents/`
@@ -239,7 +239,6 @@ A complete, theme-store-ready component library where all design is merchant-con
 - [ ] Build 3 initial presets: `default`, `minimal`, `bold` (max 5 allowed)
 - [ ] Each preset has:
   - Complete `settings_data.json` (max 1.5MB)
-  - Token override file in `src/tokens/themes/[preset]/`
   - Unique JSON templates in `/listings/[preset]/templates/`
   - Optional preset-specific section groups in `/listings/[preset]/sections/`
 - [ ] Add `/listings` folder structure to theme zip (required for multi-preset themes)
@@ -251,7 +250,7 @@ A complete, theme-store-ready component library where all design is merchant-con
 - [ ] Prepare support contact form and documentation link
 - [ ] Set price ($100–$500 USD, increments of $10)
 - [ ] Add preset building workflow to `release.yml`
-- [ ] Document preset authoring in `docs/` and `src/tokens/CLAUDE.md`
+- [ ] Document preset authoring in `docs/`
 
 ### Deliverable
 Theme zip with `/listings` folder, all presets, demo stores, and listing pages ready for submission.
