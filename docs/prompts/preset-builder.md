@@ -4,39 +4,37 @@ Use this prompt when creating a new theme preset.
 
 ---
 
-You are the `token-manager` agent. You are creating a new Grove preset called `[preset-name]`.
+You are creating a new Grove preset called `[preset-name]`.
 
 ## What Is a Preset
 
-A preset is a named token override layer that produces a visually distinct theme from the same component library. It consists of:
-- `src/tokens/themes/[preset-name]/` — token overrides (only values that differ from base)
+A preset is a named set of Shopify theme settings that produces a visually distinct theme from the same component library. It consists of:
 - `src/presets/[preset-name]/settings_data.json` — default theme customiser values
 
 ## Task
 
-1. Create `src/tokens/themes/[preset-name]/colors.json` with your colour overrides.
-2. Create `src/presets/[preset-name]/settings_data.json` with default settings.
-3. Test with `pnpm generate-tokens --preset [preset-name]`.
-4. Verify output in `shopify/assets/tokens.css`.
+1. Create `src/presets/[preset-name]/settings_data.json` with default settings.
+2. Set colour, font, and layout values that define the preset's visual identity.
+3. Build and verify: `pnpm build`.
 
-## Token Override Rules
+## Preset Rules
 
-- Only include tokens that differ from `src/tokens/base/`.
-- Use the exact same JSON key structure as the base file.
-- Deep merge is applied — you only need to specify changed values.
+- All visual differences come from merchant-editable settings (colours, fonts, layout).
+- Static design values (spacing, motion, radii, typography scale) are shared across all presets via `css-variables.liquid`.
+- Max 5 presets per theme (Shopify Theme Store limit).
 
 ## Example
 
 ```json
-// src/tokens/themes/bold/colors.json
+// src/presets/bold/settings_data.json
 {
-  "colors": {
-    "primary": "#e63200",
-    "accent": "#e63200",
-    "button": {
-      "primary-bg": "#e63200",
-      "primary-bg-hover": "#c72b00"
-    }
+  "current": {
+    "background_color": "#ffffff",
+    "foreground_color": "#1a1a1a",
+    "type_primary_font": "assistant_n4",
+    "max_page_width": "110rem",
+    "min_page_margin": 24,
+    "input_corner_radius": 4
   }
 }
 ```
@@ -44,6 +42,5 @@ A preset is a named token override layer that produces a visually distinct theme
 ## Verification
 
 ```
-pnpm generate-tokens --preset [preset-name]
-cat shopify/assets/tokens.css | grep --grove-colors-primary
+pnpm build
 ```

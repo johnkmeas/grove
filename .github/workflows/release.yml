@@ -40,9 +40,7 @@ jobs:
         run: echo "version=${GITHUB_REF#refs/heads/release/}" >> $GITHUB_OUTPUT
 
       - name: Build default preset
-        run: |
-          pnpm generate-tokens --preset default
-          pnpm build
+        run: pnpm build
 
       - name: Theme Check
         run: npx @shopify/theme-check-node shopify/ --config .shopify-theme-check.yml
@@ -56,16 +54,12 @@ jobs:
           mv *.zip grove-default-${{ steps.version.outputs.version }}.zip
 
       - name: Build minimal preset
-        run: |
-          pnpm generate-tokens --preset minimal
-          pnpm build
+        run: pnpm build --mode minimal
           npx @shopify/cli theme package --path shopify/
           mv *.zip grove-minimal-${{ steps.version.outputs.version }}.zip
 
       - name: Build bold preset
-        run: |
-          pnpm generate-tokens --preset bold
-          pnpm build
+        run: pnpm build --mode bold
           npx @shopify/cli theme package --path shopify/
           mv *.zip grove-bold-${{ steps.version.outputs.version }}.zip
 

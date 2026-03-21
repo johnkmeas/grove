@@ -8,7 +8,6 @@
     "status": "stable",
     "schemaVersion": "1.0.0",
     "usedIn": [],
-    "tokens": [],
     "privateSnippets": [],
     "sharedSnippets": [],
     "consumesBlocks": []
@@ -22,7 +21,6 @@
     "status": "stable",
     "schemaVersion": "1.0.0",
     "usedIn": [],
-    "tokens": [],
     "privateSnippets": [],
     "sharedSnippets": [],
     "consumesBlocks": []
@@ -36,7 +34,6 @@
     "status": "stable",
     "schemaVersion": "1.0.0",
     "usedIn": ["product"],
-    "tokens": [],
     "privateSnippets": [],
     "sharedSnippets": ["image"],
     "consumesBlocks": []
@@ -50,7 +47,6 @@
     "status": "stable",
     "schemaVersion": "1.0.0",
     "usedIn": ["collection"],
-    "tokens": [],
     "privateSnippets": [],
     "sharedSnippets": ["image"],
     "consumesBlocks": []
@@ -64,7 +60,6 @@
     "status": "stable",
     "schemaVersion": "1.0.0",
     "usedIn": ["list-collections"],
-    "tokens": [],
     "privateSnippets": [],
     "sharedSnippets": ["image"],
     "consumesBlocks": []
@@ -78,7 +73,6 @@
     "status": "stable",
     "schemaVersion": "1.0.0",
     "usedIn": ["cart"],
-    "tokens": [],
     "privateSnippets": [],
     "sharedSnippets": ["image"],
     "consumesBlocks": []
@@ -92,7 +86,6 @@
     "status": "stable",
     "schemaVersion": "1.0.0",
     "usedIn": ["article"],
-    "tokens": [],
     "privateSnippets": [],
     "sharedSnippets": [],
     "consumesBlocks": []
@@ -106,7 +99,6 @@
     "status": "stable",
     "schemaVersion": "1.0.0",
     "usedIn": ["blog"],
-    "tokens": [],
     "privateSnippets": [],
     "sharedSnippets": [],
     "consumesBlocks": []
@@ -120,7 +112,6 @@
     "status": "stable",
     "schemaVersion": "1.0.0",
     "usedIn": ["page"],
-    "tokens": [],
     "privateSnippets": [],
     "sharedSnippets": [],
     "consumesBlocks": []
@@ -134,7 +125,6 @@
     "status": "stable",
     "schemaVersion": "1.0.0",
     "usedIn": ["search"],
-    "tokens": [],
     "privateSnippets": [],
     "sharedSnippets": ["image"],
     "consumesBlocks": []
@@ -148,7 +138,6 @@
     "status": "stable",
     "schemaVersion": "1.0.0",
     "usedIn": ["404"],
-    "tokens": [],
     "privateSnippets": [],
     "sharedSnippets": [],
     "consumesBlocks": []
@@ -162,7 +151,6 @@
     "status": "stable",
     "schemaVersion": "1.0.0",
     "usedIn": ["password"],
-    "tokens": [],
     "privateSnippets": [],
     "sharedSnippets": [],
     "consumesBlocks": []
@@ -176,7 +164,6 @@
     "status": "stable",
     "schemaVersion": "1.0.0",
     "usedIn": ["index"],
-    "tokens": [],
     "privateSnippets": [],
     "sharedSnippets": [],
     "consumesBlocks": []
@@ -190,7 +177,6 @@
     "status": "stable",
     "schemaVersion": "1.0.0",
     "usedIn": [],
-    "tokens": [],
     "privateSnippets": [],
     "sharedSnippets": [],
     "consumesBlocks": ["text", "group"]

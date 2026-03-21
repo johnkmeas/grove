@@ -24,15 +24,15 @@ Needed a framework foundation for component-first Shopify theme development opti
 | CSS convention | Nested BEM SCSS | Agent-predictable, enforceable via Stylelint |
 | CI platform | GitHub Actions | Standard, Shopify CLI integrates cleanly |
 | Deploy target | CI pipeline only | `shopify/` gitignored, build artifact only |
-| Design tokens | JSON → CSS custom properties | Single source of truth, bridges design tools |
-| Presets | Token override layers | One component library, many theme faces |
+| Design values | Static CSS custom properties in `css-variables.liquid` | No build pipeline; merchant settings for colours/fonts, static vars for spacing/motion/radii |
+| Presets | Shopify `settings_data.json` only | Native Shopify mechanism, no separate token layer |
 | Theme store | Full compliance target | 100+ variants, app blocks, a11y, Lighthouse 90+ |
 
 ### Consequences
 
 - Agents work exclusively in `src/`. The `shopify/` directory is never committed.
 - Vite handles multi-entry JS compilation. One entry per component.
-- Token variables are the only permitted values in SCSS — raw values are a lint error.
+- CSS custom properties from `css-variables.liquid` are the preferred values in SCSS for spacing, motion, and radii.
 - Vue 3 is only introduced in components explicitly marked `"js": "vue"` in `registry.json`.
 
 ---
@@ -220,6 +220,38 @@ Shopify updated Theme Store requirements (effective May 15, 2025): the Skeleton 
 - Demo stores must match preset industry/catalog tags.
 - No app-dependent features, no deceptive patterns (fake countdowns, stock levels).
 - Dawn/Horizon patterns must not be reintroduced.
+
+---
+
+## ADR-008 — Remove Design Token Build Pipeline
+
+**Date:** 2026-03-21
+**Status:** Accepted
+**Supersedes:** ADR-001 (design tokens and presets rows)
+
+### Context
+
+The design token system (`src/tokens/` → `generate-tokens.js` → `tokens.css`) was scaffolded but never consumed. Zero `--grove-*` variables were referenced in any component SCSS, Liquid, or JS. Meanwhile, `css-variables.liquid` already provided merchant-editable colours/fonts via Shopify theme settings — the correct pattern for a Theme Store theme.
+
+Maintaining a separate build-time token layer added complexity with no benefit: two variable namespaces, a compilation step, preset override files that duplicated `settings_data.json`, and agent documentation for a system that was never used.
+
+### Decisions
+
+| Decision | Choice | Reason |
+|---|---|---|
+| Remove `src/tokens/` | Yes | Never consumed; zero references in codebase |
+| Remove `generate-tokens.js` | Yes | No longer needed |
+| Remove `token-manager` agent role | Yes | No token system to manage |
+| Migrate spacing/motion/radii/typography | Static CSS custom properties in `css-variables.liquid` | Same file that handles merchant settings; one source of truth |
+| Colours/fonts | Merchant-editable via `settings_schema.json` | Already working correctly |
+| Presets | `settings_data.json` only | Native Shopify mechanism; no separate token override layer |
+
+### Consequences
+
+- `css-variables.liquid` is the single source for all CSS custom properties (merchant-editable and static).
+- No build step for design values. Spacing, motion, radii, and typography scale are static values in Liquid.
+- Presets are purely Shopify `settings_data.json` — different preset appearances come from different merchant setting values.
+- Components use `var(--spacing-*)`, `var(--type-*)`, `var(--motion-*)`, `var(--radius-*)` for static values and `var(--color-*)`, `var(--font-*)`, `var(--page-*)` for merchant-editable values.
 
 ---
 

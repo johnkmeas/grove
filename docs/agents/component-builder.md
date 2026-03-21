@@ -11,8 +11,7 @@ Create, edit, and refactor Grove components. Responsible for `index.liquid`, `*.
 - `src/components/registry.json` — to add/update component entry
 
 **Read-only:**
-- `src/tokens/` — read to reference correct token names
-- `src/components/_shared/` — read to use shared snippets
+- `src/components/_shared/` — read to use shared snippets and reference CSS custom properties in `css-variables.liquid`
 
 **Blocked from:**
 - `src/templates/`
@@ -27,12 +26,12 @@ Create, edit, and refactor Grove components. Responsible for `index.liquid`, `*.
 4. Write or edit files following all conventions in `src/components/CLAUDE.md`.
 5. Run `pnpm validate-schemas` after any schema changes.
 6. Run `pnpm render [name] --fixture [fixture]` to verify Liquid output.
-7. Update `registry.json` with accurate tokens/snippets lists.
+7. Update `registry.json` with accurate snippet lists.
 
 ## Conventions
 
 - BEM always nested — see `src/components/CLAUDE.md`
-- Token variables only — never raw values
+- CSS custom properties only — never raw values
 - Locale filter on all strings — `{{ 'key' | t }}`
 - Schema `_version` required
 - Max 1 snippet nesting level

@@ -77,7 +77,7 @@ function scaffoldBlock() {
 
   // --- [name].scss ---
   const scssContent = `// ${humanName} Block
-// Scoped nested BEM styles — all values via design tokens
+// Scoped nested BEM styles — use CSS custom properties from css-variables.liquid
 
 .grove-${name} {
   // Add block styles here
@@ -97,7 +97,6 @@ function scaffoldBlock() {
     status: 'draft',
     schemaVersion: '1.0.0',
     reusableIn: [],
-    tokens: [],
   }
 
   writeFileSync(registryPath, JSON.stringify(registry, null, 2))
@@ -168,13 +167,13 @@ function scaffoldSection() {
 
   // --- [name].scss ---
   const scssContent = `// ${humanName} Component
-// Scoped nested BEM styles — all values via design tokens
+// Scoped nested BEM styles — use CSS custom properties from css-variables.liquid
 
 .${name} {
   // Add component styles here
 
   &__inner {
-    padding-block: var(--grove-spacing-xl);
+    padding-block: var(--spacing-xl);
   }
 }
 `
@@ -261,7 +260,7 @@ TODO: Describe what this component does, where it is used, and what problem it s
 
 - **Private snippets:** none
 - **Shared snippets:** none
-- **Tokens:** TODO: list tokens used
+- **CSS custom properties:** TODO: list variables used
 - **JS / Vue:** ${isVue ? 'Vue 3 island' : 'Vanilla ES module'}
 `
   writeFileSync(resolve(componentDir, `${name}.md`), mdContent)
@@ -281,7 +280,6 @@ TODO: Describe what this component does, where it is used, and what problem it s
     status: 'draft',
     schemaVersion: '1.0.0',
     usedIn: [],
-    tokens: [],
     privateSnippets: [],
     sharedSnippets: [],
   }
