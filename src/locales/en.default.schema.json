@@ -1,4 +1,15 @@
 {
+  "slideshow": {
+    "name": "Slideshow",
+    "slide": "Slide",
+    "image": "Image",
+    "heading": "Heading",
+    "subheading": "Subheading",
+    "button_label": "Button label",
+    "button_link": "Button link",
+    "autoplay": "Auto-rotate slides",
+    "autoplay_speed": "Change slides every"
+  },
   "general": {
     "404": "Not found",
     "article": "Article",
