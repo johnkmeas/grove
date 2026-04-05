@@ -49,6 +49,20 @@
     "no_results_html": "No results found for {{ terms }}",
     "results_for_html": "{{ count }} results found for {{ terms }}"
   },
+  "slideshow": {
+    "name": "Slideshow",
+    "label": "Slideshow",
+    "slide": "Slide",
+    "image": "Image",
+    "heading": "Heading",
+    "subheading": "Subheading",
+    "button_label": "Button label",
+    "button_link": "Button link",
+    "autoplay": "Auto-rotate slides",
+    "autoplay_speed": "Change slides every",
+    "previous": "Previous slide",
+    "next": "Next slide"
+  },
   "general": {
     "header": "Header",
     "footer": "Footer",

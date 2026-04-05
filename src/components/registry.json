@@ -168,6 +168,19 @@
     "sharedSnippets": [],
     "consumesBlocks": []
   },
+  "slideshow": {
+    "type": "section",
+    "blockModel": "custom",
+    "js": "self-contained",
+    "interactive": true,
+    "vue": false,
+    "status": "stable",
+    "schemaVersion": "1.0.0",
+    "usedIn": [],
+    "privateSnippets": [],
+    "sharedSnippets": [],
+    "consumesBlocks": []
+  },
   "custom-section": {
     "type": "section",
     "blockModel": "theme",
