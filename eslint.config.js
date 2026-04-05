@@ -2,6 +2,9 @@ import js from '@eslint/js'
 import pluginVue from 'eslint-plugin-vue'
 
 export default [
+  {
+    ignores: ['src/assets/**'],
+  },
   js.configs.recommended,
   ...pluginVue.configs['flat/recommended'],
   {
