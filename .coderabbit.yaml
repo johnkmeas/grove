@@ -1,0 +1,65 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+language: "en-US"
+
+reviews:
+  profile: "assertive"
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    draft_pr: false
+    base_branches:
+      - "main"
+  request_changes_workflow: true
+  collapsible_walkthrough: true
+  assess_linked_issues: true
+  poem: false
+
+chat:
+  auto_reply: true
+
+path_filters:
+  - "!shopify/**"
+  - "!node_modules/**"
+  - "!*.lock"
+  - "!pnpm-lock.yaml"
+  - "!.performance-budget.json"
+
+path_instructions:
+  - path: "src/components/**"
+    instructions: |
+      This is a Shopify theme component. Review for:
+      - BEM class naming must be nested (never flat `.block__element` selectors)
+      - Block BEM prefix must be `grove-`
+      - All design values must use CSS custom properties (`var(--spacing-*)`, `var(--type-*)`, `var(--motion-*)`, `var(--radius-*)`) — no hardcoded spacing, type sizes, or motion values
+      - All merchant-facing strings must use `{{ 'key' | t }}` — no hardcoded text
+      - No `import`/`export` in component JS — Shopify wraps it in an IIFE
+      - Vue only in components marked `"js": "vue"` in registry.json
+      - Max snippet nesting: 1 level per component
+      - No app-dependent features (wishlists, scheduling, discount codes, Instagram feeds)
+      - No deceptive patterns (fake countdowns, fake stock levels, fake viewer counts)
+      - Navigation and product forms must work without JavaScript
+
+  - path: "src/blocks/**"
+    instructions: |
+      This is a Shopify theme block. Review for:
+      - Blocks use `block.settings`, NOT `section.settings` — blocks have no access to section scope
+      - Snippets in blocks must be fully parameterized via `{% render %}` — no ambient variables
+      - Block BEM prefix must be `grove-`
+      - All design values must use CSS custom properties — no hardcoded values
+      - All merchant-facing strings must use `{{ 'key' | t }}`
+
+  - path: "src/**/*.schema.json"
+    instructions: |
+      This is a Shopify section/block schema. Review for:
+      - Valid Shopify schema structure
+      - Setting `id` fields must not be renamed or removed (causes merchant data loss)
+      - New sections should use `{ "type": "@theme" }` blocks — inline blocks are deprecated
+
+  - path: "src/**/*.scss"
+    instructions: |
+      Review SCSS for:
+      - BEM must be nested — never write `.block__element` as a top-level selector
+      - Use `var(--spacing-*)`, `var(--type-*)`, `var(--motion-*)`, `var(--radius-*)` from css-variables.liquid
+      - No hardcoded spacing, type sizes, or motion values
+      - Output must be human-readable (expanded format, no minification)
