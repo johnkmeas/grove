@@ -2,14 +2,15 @@
  * Slideshow component
  * Initializes Glider.js carousel with autoplay support.
  */
+/* global Glider */
 document.querySelectorAll('.slideshow').forEach(function (section) {
-  var viewport = section.querySelector('.slideshow__viewport');
-  var track = section.querySelector('.slideshow__track');
-  var dotsEl = section.querySelector('[data-dots]');
-  var prevArrow = section.querySelector('[data-arrow="prev"]');
-  var nextArrow = section.querySelector('[data-arrow="next"]');
-  var autoplay = section.dataset.autoplay === 'true';
-  var autoplaySpeed = (parseInt(section.dataset.autoplaySpeed, 10) || 5) * 1000;
+  const viewport = section.querySelector('.slideshow__viewport');
+  const track = section.querySelector('.slideshow__track');
+  const dotsEl = section.querySelector('[data-dots]');
+  const prevArrow = section.querySelector('[data-arrow="prev"]');
+  const nextArrow = section.querySelector('[data-arrow="next"]');
+  const autoplay = section.dataset.autoplay === 'true';
+  const autoplaySpeed = (parseInt(section.dataset.autoplaySpeed, 10) || 5) * 1000;
 
   if (!viewport || !track || track.children.length === 0) return;
 
@@ -20,7 +21,7 @@ document.querySelectorAll('.slideshow').forEach(function (section) {
       return;
     }
 
-    var glider = new Glider(viewport, {
+    const glider = new Glider(viewport, {
       slidesToShow: 1,
       slidesToScroll: 1,
       scrollLock: true,
@@ -36,7 +37,7 @@ document.querySelectorAll('.slideshow').forEach(function (section) {
 
     // Autoplay
     if (autoplay && track.children.length > 1) {
-      var timer = null;
+      let timer = null;
 
       function startAutoplay() {
         stopAutoplay();
