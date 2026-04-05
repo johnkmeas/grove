@@ -7,11 +7,11 @@ reviews:
   auto_review:
     enabled: true
     auto_incremental_review: true
-    draft_pr: false
+    drafts: false
     base_branches:
       - "main"
   request_changes_workflow: true
-  collapsible_walkthrough: true
+  collapse_walkthrough: true
   assess_linked_issues: true
   poem: false
   path_filters:
