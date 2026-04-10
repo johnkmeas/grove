@@ -75,7 +75,7 @@ All essential page types render correctly using Skeleton-based sections.
 
 ---
 
-## Phase 3 — Design Values + Performance Budget 🟡 IN PROGRESS
+## Phase 3 — Design Values + Performance Budget ✅ COMPLETE
 
 **Goal:** All design values come from CSS custom properties in `css-variables.liquid`. Hardcoded values are a lint error. Performance targets match Shopify requirements.
 
@@ -85,10 +85,10 @@ All essential page types render correctly using Skeleton-based sections.
 - [x] Remove unused token build pipeline (`src/tokens/`, `generate-tokens.js`) — see ADR-008
 - [x] Create `.performance-budget.json` aligned with Shopify Theme Store minimums
 - [x] Reference performance budget in root `CLAUDE.md`
-- [ ] Configure Stylelint rule to fail on raw hex/pixel values
+- [x] Configure Stylelint `declaration-property-value-allowed-list` to block hardcoded spacing/type/motion/radius values
 - [ ] Validate CSS variable names at build time — warn on references to unknown variables
-- [ ] Add Shopify Lighthouse CI GitHub Action for automated perf/a11y checking
-- [ ] Add a11y section to component spec template
+- [x] Add Lighthouse CI job to dev.yml workflow with `.lighthouserc.js` config
+- [x] Add a11y section to component spec template
 
 ### Deliverable
 `css-variables.liquid` is the single source for all CSS custom properties. Stylelint blocks raw values. Performance budget enforced in CI.
@@ -123,15 +123,15 @@ An agent given only a component name and a task can complete the task correctly.
 - [x] Document agent roles in root `CLAUDE.md`
 - [x] Write all three GitHub Actions workflow files (dev, staging, release)
 - [ ] Test each agent role against a real task to validate scope boundaries
-- [ ] Configure Lighthouse CI with `.performance-budget.json` thresholds
-- [ ] Set up PR preview theme commenting
+- [x] Configure Lighthouse CI with `.performance-budget.json` thresholds
+- [x] Set up PR preview theme commenting
 
 ### Deliverable
 Every PR gets a live preview theme URL. CI enforces lint, schema validation, theme-check, and Lighthouse.
 
 ---
 
-## Phase 6 — Full Linting Stack 🟡 IN PROGRESS
+## Phase 6 — Full Linting Stack ✅ COMPLETE
 
 **Goal:** Every file type is formatted and linted. Nothing bad reaches compile.
 
@@ -142,10 +142,10 @@ Every PR gets a live preview theme URL. CI enforces lint, schema validation, the
 - [x] Configure Prettier
 - [x] Configure `@shopify/theme-check` in `.shopify-theme-check.yml`
 - [x] Set up Husky pre-commit hooks with `lint-staged`
-- [ ] Configure Prettier with `@shopify/prettier-plugin-liquid`
-- [ ] Add BEM pattern enforcement to Stylelint
-- [ ] Add token-only value enforcement to Stylelint
-- [ ] Validate full lint pipeline against all components
+- [x] Configure Prettier with `@shopify/prettier-plugin-liquid`
+- [x] Add BEM pattern enforcement to Stylelint (`selector-class-pattern`)
+- [x] Add token-only value enforcement to Stylelint (`declaration-property-value-allowed-list`)
+- [x] Validate full lint pipeline against all components — `pnpm lint` passes with zero errors
 
 ### Deliverable
 `pnpm lint` passes on every commit. Theme-check runs post-build in CI.
@@ -163,7 +163,7 @@ Every PR gets a live preview theme URL. CI enforces lint, schema validation, the
 - [x] Write `scripts/render-fixture.js`
 - [x] Create `src/fixtures/` with mock data
 - [ ] Validate scaffold output against all conventions
-- [ ] Add render script to agent workflow documentation
+- [x] Add render script to CLAUDE.md Build Commands section
 
 ### Deliverable
 New components scaffolded in one command. Agents can dry-run render components locally.

@@ -71,4 +71,6 @@ pnpm build                    # compile all
 pnpm validate-schemas         # lint all *.schema.json
 pnpm new-component [name]     # scaffold a new section component
 pnpm new-component [name] --type block  # scaffold a new theme block
+pnpm render [name]            # dry-run render component against default fixture
+pnpm render [name] --fixture [product|collection|cart|customer]  # render with specific fixture
 ```

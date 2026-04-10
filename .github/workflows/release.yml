@@ -54,12 +54,14 @@ jobs:
           mv *.zip grove-default-${{ steps.version.outputs.version }}.zip
 
       - name: Build minimal preset
-        run: pnpm build --mode minimal
+        run: |
+          pnpm build --mode minimal
           npx @shopify/cli theme package --path shopify/
           mv *.zip grove-minimal-${{ steps.version.outputs.version }}.zip
 
       - name: Build bold preset
-        run: pnpm build --mode bold
+        run: |
+          pnpm build --mode bold
           npx @shopify/cli theme package --path shopify/
           mv *.zip grove-bold-${{ steps.version.outputs.version }}.zip
 

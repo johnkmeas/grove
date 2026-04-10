@@ -96,6 +96,20 @@
     "unit-no-unknown": true,
     "property-no-unknown": true,
     "declaration-block-no-duplicate-properties": true,
-    "max-nesting-depth": 3
+    "max-nesting-depth": 3,
+    "declaration-property-value-allowed-list": [{
+      "/^margin/": ["/var\\(--/", "/^0$/", "/^auto$/", "/^inherit$/", "/^initial$/", "/^unset$/", "/^none$/"],
+      "/^padding/": ["/var\\(--/", "/^0$/", "/^inherit$/", "/^initial$/", "/^unset$/"],
+      "gap": ["/var\\(--/", "/^0$/", "/^normal$/", "/^inherit$/"],
+      "row-gap": ["/var\\(--/", "/^0$/", "/^normal$/", "/^inherit$/"],
+      "column-gap": ["/var\\(--/", "/^0$/", "/^normal$/", "/^inherit$/"],
+      "font-size": ["/var\\(--/", "/^inherit$/", "/^initial$/", "/^unset$/"],
+      "line-height": ["/var\\(--/", "/^inherit$/", "/^initial$/", "/^normal$/", "/^[0-9]*\\.?[0-9]+$/"],
+      "border-radius": ["/var\\(--/", "/^0$/", "/^inherit$/", "/^initial$/"],
+      "transition-duration": ["/var\\(--/", "/^0s$/", "/^inherit$/"],
+      "transition-timing-function": ["/var\\(--/", "/^linear$/", "/^ease$/", "/^inherit$/"],
+      "animation-duration": ["/var\\(--/", "/^0s$/", "/^inherit$/"],
+      "animation-timing-function": ["/var\\(--/", "/^linear$/", "/^ease$/", "/^inherit$/"]
+    }]
   }
 }

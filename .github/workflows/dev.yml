@@ -80,3 +80,27 @@ jobs:
               repo: context.repo.repo,
               body: `## 🌿 Grove Preview\n\nTheme preview deployed: https://${{ secrets.SHOPIFY_STORE }}/?\\_bt=${{ secrets.DEV_THEME_ID }}\n\n*Built from \`${{ github.head_ref }}\` at ${{ github.sha }}*`
             })
+
+  lighthouse:
+    needs: build-and-deploy
+    if: github.event_name == 'pull_request'
+    timeout-minutes: 10
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Lighthouse CI
+        env:
+          LIGHTHOUSE_URL: "https://${{ secrets.SHOPIFY_STORE }}/?_bt=${{ secrets.DEV_THEME_ID }}"
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        run: |
+          npm install -g @lhci/cli
+          lhci autorun --config .lighthouserc.js

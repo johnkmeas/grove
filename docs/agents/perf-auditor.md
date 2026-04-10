@@ -16,13 +16,13 @@ Review components and the compiled theme for performance and accessibility issue
 
 ## Performance Budget
 
-See `.performance-budget.json`:
-- Lighthouse Performance: 90+
-- Lighthouse Accessibility: 95+
+See `.performance-budget.json` for canonical values:
+- Lighthouse Performance: 60+ (Shopify Theme Store minimum)
+- Lighthouse Accessibility: 90+
 - Lighthouse Best Practices: 90+
 - Lighthouse SEO: 90+
 - Total CSS: 50kb
-- Total JS: 80kb
+- Total JS: 16kb (minified bundle maximum)
 - Per-component JS: 15kb
 
 ## Audit Checklist

@@ -41,4 +41,16 @@ export default [
       'no-console': 'off',
     },
   },
+  {
+    files: ['.lighthouserc.js'],
+    languageOptions: {
+      sourceType: 'commonjs',
+      globals: {
+        module: 'readonly',
+        require: 'readonly',
+        process: 'readonly',
+        console: 'readonly',
+      },
+    },
+  },
 ]

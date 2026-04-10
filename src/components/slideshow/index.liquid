@@ -28,7 +28,10 @@
             </div>
           {%- endif -%}
 
-          {%- if block.settings.heading != blank or block.settings.subheading != blank or block.settings.button_label != blank -%}
+          {%- if block.settings.heading != blank
+            or block.settings.subheading != blank
+            or block.settings.button_label != blank
+          -%}
             <div class="slideshow__content slideshow__content--{{ block.settings.text_alignment }}">
               {%- if block.settings.heading != blank -%}
                 <h2 class="slideshow__heading">{{ block.settings.heading }}</h2>
@@ -60,7 +63,15 @@
     aria-label="{{ 'slideshow.previous' | t }}"
     data-arrow="prev"
   >
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      aria-hidden="true"
+    >
       <polyline points="15 18 9 12 15 6"></polyline>
     </svg>
   </button>
@@ -70,7 +81,15 @@
     aria-label="{{ 'slideshow.next' | t }}"
     data-arrow="next"
   >
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      aria-hidden="true"
+    >
       <polyline points="9 18 15 12 9 6"></polyline>
     </svg>
   </button>
