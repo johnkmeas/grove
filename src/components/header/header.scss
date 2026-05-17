@@ -27,6 +27,6 @@ header {
   .header__menu,
   .header__icons {
     display: flex;
-    gap: 1rem;
+    gap: var(--spacing-md);
   }
 }

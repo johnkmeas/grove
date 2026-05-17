@@ -93,6 +93,24 @@
     "scss/dollar-variable-pattern": "^[a-z][a-z0-9-]*$",
     "custom-property-pattern": null,
     "color-no-invalid-hex": true,
+    "color-no-hex": true,
+    "color-named": ["never", { "ignore": ["inside-function"] }],
+    "function-disallowed-list": ["rgb", "rgba", "hsl", "hsla", "hwb", "lab", "lch", "oklab", "oklch"],
+    "declaration-property-value-disallowed-list": [
+      {
+        "/^(margin|padding|gap|row-gap|column-gap|inset|top|right|bottom|left)/": ["/[0-9](\\.[0-9]+)?(px|rem|em)/"],
+        "/border(-(top|right|bottom|left))?-radius$/": ["/[0-9](\\.[0-9]+)?(px|rem|em)/"],
+        "border-radius": ["/[0-9](\\.[0-9]+)?(px|rem|em)/"],
+        "font-size": ["/[0-9](\\.[0-9]+)?(px|rem|em)/"],
+        "line-height": ["/[0-9](\\.[0-9]+)?(px|rem|em)/"],
+        "transition-duration": ["/[0-9](\\.[0-9]+)?m?s/"],
+        "animation-duration": ["/[0-9](\\.[0-9]+)?m?s/"]
+      },
+      {
+        "message": "Use a CSS custom property from css-variables.liquid (e.g. var(--spacing-md), var(--type-body-md-size), var(--radius-md), var(--motion-duration-fast)) instead of a raw value.",
+        "severity": "error"
+      }
+    ],
     "unit-no-unknown": true,
     "property-no-unknown": true,
     "declaration-block-no-duplicate-properties": true,
