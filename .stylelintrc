@@ -103,7 +103,9 @@
         "border-radius": ["/[0-9](\\.[0-9]+)?(px|rem|em)/"],
         "font-size": ["/[0-9](\\.[0-9]+)?(px|rem|em)/"],
         "line-height": ["/[0-9](\\.[0-9]+)?(px|rem|em)/"],
+        "transition": ["/[0-9](\\.[0-9]+)?m?s/"],
         "transition-duration": ["/[0-9](\\.[0-9]+)?m?s/"],
+        "animation": ["/[0-9](\\.[0-9]+)?m?s/"],
         "animation-duration": ["/[0-9](\\.[0-9]+)?m?s/"]
       },
       {
