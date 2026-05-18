@@ -100,7 +100,6 @@
       {
         "/^(margin|padding|gap|row-gap|column-gap|inset|top|right|bottom|left)/": ["/[0-9](\\.[0-9]+)?(px|rem|em)/"],
         "/border(-(top|right|bottom|left))?-radius$/": ["/[0-9](\\.[0-9]+)?(px|rem|em)/"],
-        "border-radius": ["/[0-9](\\.[0-9]+)?(px|rem|em)/"],
         "font-size": ["/[0-9](\\.[0-9]+)?(px|rem|em)/"],
         "line-height": ["/[0-9](\\.[0-9]+)?(px|rem|em)/"],
         "transition": ["/[0-9](\\.[0-9]+)?m?s/"],
