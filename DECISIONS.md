@@ -255,4 +255,40 @@ Maintaining a separate build-time token layer added complexity with no benefit: 
 
 ---
 
+## ADR-009 — Stylelint Enforces Token-Only Design Values
+
+**Date:** 2026-05-17
+**Status:** Accepted
+**Relates to:** ADR-008 (single source of CSS custom properties)
+
+### Context
+
+ADR-008 made `css-variables.liquid` the single source of truth for design values, but nothing prevented a contributor (or agent) from writing `margin: 24px` or `color: #fff` directly. Failure pattern #14 (hardcoded visual design) and the Theme Store requirement that all design be merchant-controlled both rely on this being enforced at build time, not at review time.
+
+### Decisions
+
+| Decision | Choice | Reason |
+|---|---|---|
+| Hex colours | Banned (`color-no-hex`) | All colours must come from `var(--color-*)` |
+| Named colours | Banned (`color-named: never`) | Same — except inside `var()` fallbacks |
+| `rgb`/`rgba`/`hsl`/`hsla`/`hwb`/`lab`/`lch`/`oklab`/`oklch` functions | Banned (`function-disallowed-list`) | Forces colour values through merchant settings |
+| Raw `px`/`rem`/`em` on `margin`/`padding`/`gap`/`inset`/positional offsets | Banned | Use `var(--spacing-*)` |
+| Raw `px`/`rem`/`em` on `border-radius` | Banned | Use `var(--radius-*)` |
+| Raw `px`/`rem`/`em` on `font-size`/`line-height` | Banned | Use `var(--type-*)` |
+| Raw `ms`/`s` on `transition`/`transition-duration`/`transition-delay`/`animation`/`animation-duration`/`animation-delay` | Banned | Use `var(--motion-duration-*)`; both shorthand and longhand (incl. delays) are covered |
+| `width`/`height`/`min-*`/`max-*`/`border-width`/`grid-template-*` | NOT banned | Component-local sizing has no theme-wide token |
+| Unitless `line-height` (e.g. `1.4`) | NOT banned | Common CSS pattern; tokens preferred but not enforceable |
+| Viewport/character/percentage units (`vw`, `vh`, `ch`, `%`) | NOT banned | Fluid/viewport-relative sizing has no token; the tokens themselves use `vw` inside `clamp()` (e.g. `--spacing-page-gutter`), and `%` is needed for layout like `top: 50%` |
+
+Violations emit a single error message pointing the author at `css-variables.liquid` so the fix is obvious without reading the rule.
+
+### Consequences
+
+- `pnpm lint:scss` now fails on any hardcoded colour or token-backed dimension.
+- `src/components/hello-world/hello-world.scss` carries a file-level `stylelint-disable` because it is a Skeleton onboarding placeholder slated for replacement in Phase 8.
+- Phase 6's "token-only value enforcement to Stylelint" task is delivered by the same rule set.
+- Adding a new token (e.g. a new spacing step) requires editing only `css-variables.liquid` — no other config change.
+
+---
+
 *Add new ADRs below this line.*

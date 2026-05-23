@@ -85,7 +85,7 @@ All essential page types render correctly using Skeleton-based sections.
 - [x] Remove unused token build pipeline (`src/tokens/`, `generate-tokens.js`) — see ADR-008
 - [x] Create `.performance-budget.json` aligned with Shopify Theme Store minimums
 - [x] Reference performance budget in root `CLAUDE.md`
-- [ ] Configure Stylelint rule to fail on raw hex/pixel values
+- [x] Configure Stylelint rule to fail on raw hex/pixel values
 - [ ] Validate CSS variable names at build time — warn on references to unknown variables
 - [ ] Add Shopify Lighthouse CI GitHub Action for automated perf/a11y checking
 - [ ] Add a11y section to component spec template
@@ -144,7 +144,7 @@ Every PR gets a live preview theme URL. CI enforces lint, schema validation, the
 - [x] Set up Husky pre-commit hooks with `lint-staged`
 - [ ] Configure Prettier with `@shopify/prettier-plugin-liquid`
 - [ ] Add BEM pattern enforcement to Stylelint
-- [ ] Add token-only value enforcement to Stylelint
+- [x] Add token-only value enforcement to Stylelint
 - [ ] Validate full lint pipeline against all components
 
 ### Deliverable
