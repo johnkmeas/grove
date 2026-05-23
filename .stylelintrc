@@ -104,8 +104,10 @@
         "line-height": ["/[0-9](\\.[0-9]+)?(px|rem|em)/"],
         "transition": ["/[0-9](\\.[0-9]+)?m?s/"],
         "transition-duration": ["/[0-9](\\.[0-9]+)?m?s/"],
+        "transition-delay": ["/[0-9](\\.[0-9]+)?m?s/"],
         "animation": ["/[0-9](\\.[0-9]+)?m?s/"],
-        "animation-duration": ["/[0-9](\\.[0-9]+)?m?s/"]
+        "animation-duration": ["/[0-9](\\.[0-9]+)?m?s/"],
+        "animation-delay": ["/[0-9](\\.[0-9]+)?m?s/"]
       },
       {
         "message": "Use a CSS custom property from css-variables.liquid (e.g. var(--spacing-md), var(--type-body-md-size), var(--radius-md), var(--motion-duration-fast)) instead of a raw value.",

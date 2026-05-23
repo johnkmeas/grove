@@ -275,9 +275,10 @@ ADR-008 made `css-variables.liquid` the single source of truth for design values
 | Raw `px`/`rem`/`em` on `margin`/`padding`/`gap`/`inset`/positional offsets | Banned | Use `var(--spacing-*)` |
 | Raw `px`/`rem`/`em` on `border-radius` | Banned | Use `var(--radius-*)` |
 | Raw `px`/`rem`/`em` on `font-size`/`line-height` | Banned | Use `var(--type-*)` |
-| Raw `ms`/`s` on `transition-duration`/`animation-duration` | Banned | Use `var(--motion-duration-*)` |
+| Raw `ms`/`s` on `transition`/`transition-duration`/`transition-delay`/`animation`/`animation-duration`/`animation-delay` | Banned | Use `var(--motion-duration-*)`; both shorthand and longhand (incl. delays) are covered |
 | `width`/`height`/`min-*`/`max-*`/`border-width`/`grid-template-*` | NOT banned | Component-local sizing has no theme-wide token |
 | Unitless `line-height` (e.g. `1.4`) | NOT banned | Common CSS pattern; tokens preferred but not enforceable |
+| Viewport/character/percentage units (`vw`, `vh`, `ch`, `%`) | NOT banned | Fluid/viewport-relative sizing has no token; the tokens themselves use `vw` inside `clamp()` (e.g. `--spacing-page-gutter`), and `%` is needed for layout like `top: 50%` |
 
 Violations emit a single error message pointing the author at `css-variables.liquid` so the fix is obvious without reading the rule.
 
