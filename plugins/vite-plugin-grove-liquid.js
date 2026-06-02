@@ -14,6 +14,69 @@ import * as sass from 'sass'
 
 const SCHEMA_INJECT_COMMENT = '<!-- SCHEMA_INJECT -->'
 
+// --- CSS custom property validation ---------------------------------------
+//
+// Warn at build time when a component/block stylesheet references a CSS
+// custom property (`var(--x)`) that nothing defines. Stylelint enforces that
+// design values go through a token (ADR-009) but cannot verify the token name
+// actually exists, so a typo like `var(--spacing-mdd)` passes lint and then
+// renders empty at runtime. This is KNOWN_AGENT_FAILURES #2 — a silent visual
+// regression with no console error. Severity is a warning, not a build error:
+// the reference may still resolve from a Shopify-provided or runtime property.
+
+const CUSTOM_PROP_DEF = /--[A-Za-z0-9_-]+(?=\s*:)/g
+const CUSTOM_PROP_REF = /var\(\s*(--[A-Za-z0-9_-]+)/g
+
+// Collect every `--name:` definition found in a chunk of CSS or Liquid.
+function collectDefinedCustomProps(text, into = new Set()) {
+  for (const match of text.matchAll(CUSTOM_PROP_DEF)) {
+    into.add(match[0])
+  }
+  return into
+}
+
+// Custom properties available to every component/block. css-variables.liquid
+// is the canonical token source (ADR-008); theme.scss and critical.css define
+// a handful of global layout properties (e.g. --content-grid).
+function loadGlobalCustomProps(srcPath) {
+  const sources = [
+    resolve(srcPath, 'components/_shared/css-variables.liquid'),
+    resolve(srcPath, 'theme.scss'),
+    resolve(srcPath, 'assets/critical.css'),
+  ]
+  const globals = new Set()
+  for (const file of sources) {
+    if (existsSync(file)) collectDefinedCustomProps(readFileSync(file, 'utf-8'), globals)
+  }
+  return globals
+}
+
+// Return the set of `var(--x)` references in `css` that no source defines.
+// `localSources` are strings a component may define its own properties in —
+// its own compiled CSS and its Liquid (inline `style="--x: …"` set from
+// merchant settings) — which are valid even though they aren't global tokens.
+function collectUnknownCustomProps(css, globalProps, localSources = []) {
+  const known = new Set(globalProps)
+  for (const src of localSources) collectDefinedCustomProps(src, known)
+  const unknown = new Set()
+  for (const match of css.matchAll(CUSTOM_PROP_REF)) {
+    if (!known.has(match[1])) unknown.add(match[1])
+  }
+  return unknown
+}
+
+// Emit a single grouped warning for all undefined references found in a build.
+function reportUnknownCustomProps(warnings) {
+  if (warnings.length === 0) return
+  const lines = warnings.map((w) => `  ⚠ ${w.label} → var(${w.name})`).join('\n')
+  console.warn(
+    `\n[grove:css-vars] ${warnings.length} reference(s) to undefined CSS custom properties:\n` +
+      `${lines}\n` +
+      `  Define them in src/components/_shared/css-variables.liquid or fix the name. ` +
+      `See KNOWN_AGENT_FAILURES #2.\n`,
+  )
+}
+
 export default function grovePlugin(options = {}) {
   const { srcDir = 'src', outDir = 'shopify' } = options
   let fsWatcherStarted = false
@@ -70,6 +133,12 @@ async function processLiquidFiles(srcDir, outDir) {
   const srcPath = resolve(process.cwd(), srcDir)
   const outPath = resolve(process.cwd(), outDir)
 
+  // Globally-available CSS custom properties, loaded once per build. Empty
+  // means the token source is missing — skip validation rather than warn on
+  // every reference.
+  const globalCustomProps = loadGlobalCustomProps(srcPath)
+  const cssVarWarnings = []
+
   // Process component sections (src/components/*/index.liquid)
   const sectionFiles = await glob(`${srcPath}/components/*/index.liquid`)
   for (const liquidFile of sectionFiles) {
@@ -89,6 +158,12 @@ async function processLiquidFiles(srcDir, outDir) {
         style: 'expanded',
         loadPaths: [resolve(process.cwd(), srcDir)],
       })
+      if (globalCustomProps.size > 0) {
+        const unknown = collectUnknownCustomProps(result.css, globalCustomProps, [result.css, liquidContent])
+        for (const name of unknown) {
+          cssVarWarnings.push({ label: `sections/${componentName}.liquid`, name })
+        }
+      }
       const stylesheetBlock = `{% stylesheet %}\n${result.css}\n{% endstylesheet %}`
       if (liquidContent.includes(SCHEMA_INJECT_COMMENT)) {
         liquidContent = liquidContent.replace(SCHEMA_INJECT_COMMENT, `${stylesheetBlock}\n\n${SCHEMA_INJECT_COMMENT}`)
@@ -150,6 +225,12 @@ async function processLiquidFiles(srcDir, outDir) {
         style: 'expanded',
         loadPaths: [resolve(process.cwd(), srcDir)],
       })
+      if (globalCustomProps.size > 0) {
+        const unknown = collectUnknownCustomProps(result.css, globalCustomProps, [result.css, liquidContent])
+        for (const name of unknown) {
+          cssVarWarnings.push({ label: `blocks/${blockName}.liquid`, name })
+        }
+      }
       const stylesheetBlock = `{% stylesheet %}\n${result.css}\n{% endstylesheet %}`
       if (liquidContent.includes(SCHEMA_INJECT_COMMENT)) {
         liquidContent = liquidContent.replace(SCHEMA_INJECT_COMMENT, `${stylesheetBlock}\n\n${SCHEMA_INJECT_COMMENT}`)
@@ -177,6 +258,9 @@ async function processLiquidFiles(srcDir, outDir) {
     mkdirSync(blocksDir, { recursive: true })
     writeFileSync(resolve(blocksDir, `${blockName}.liquid`), liquidContent)
   }
+
+  // Report any undefined CSS custom property references found above.
+  reportUnknownCustomProps(cssVarWarnings)
 
   // Process shared snippets (src/components/_shared/*.liquid)
   const sharedSnippets = await glob(`${srcPath}/components/_shared/*.liquid`)

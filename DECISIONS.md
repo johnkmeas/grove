@@ -291,4 +291,34 @@ Violations emit a single error message pointing the author at `css-variables.liq
 
 ---
 
+## ADR-010 — Build-Time Validation of CSS Custom Property References
+
+**Date:** 2026-06-02
+**Status:** Accepted
+**Relates to:** ADR-009 (Stylelint enforces token-only values), KNOWN_AGENT_FAILURES #2
+
+### Context
+
+ADR-009's Stylelint rules force every design value through a CSS custom property (`var(--x)`), but Stylelint only checks that a token is *used* — it cannot verify the token *exists*. A typo like `var(--spacing-mdd)` or an invented name like `var(--grove-color-brand)` passes lint and then renders empty at runtime with no console error. This is KNOWN_AGENT_FAILURES #2 ("Invented CSS Variable Names") — a silent visual regression that is hard to debug. Catching it needs name resolution, which lives at build time, not lint time.
+
+### Decisions
+
+| Decision | Choice | Reason |
+|---|---|---|
+| Where | `vite-plugin-grove-liquid.js`, during SCSS compilation | The plugin already compiles each component/block stylesheet; it has the resolved CSS in hand |
+| Severity | Warning, not build error | A reference may still resolve from a Shopify-provided or runtime-injected property; do not block builds on a heuristic |
+| Known set — global | `css-variables.liquid` + `theme.scss` + `critical.css` | `css-variables.liquid` is the canonical token source (ADR-008); the others define a few global layout properties (`--content-*`) |
+| Known set — local | Properties defined in the component's own compiled CSS and its Liquid | Components legitimately define local props (e.g. `--collection-card-size`) and set props inline via `style="--alignment: …"` from merchant settings |
+| Scope | Component and block stylesheets only | These are the agent-authored surface this plugin owns; `theme.scss` is compiled by Vite |
+| Reference syntax | `var(--name)` references vs. `--name:` definitions | Distinguishes use from declaration so a prop defined and used in one file is known |
+
+### Consequences
+
+- `pnpm build` prints a single grouped `[grove:css-vars]` warning listing each undefined reference by file and name, pointing the author at `css-variables.liquid`.
+- The validation is skipped entirely if the global token source is missing, to avoid warning on every reference.
+- Adding a new token still requires only editing `css-variables.liquid` — no validator config change.
+- Because severity is a warning, CI does not fail on it; promoting it to an error is a future option once the component library (Phase 8) is built out and the known-set heuristic is proven.
+
+---
+
 *Add new ADRs below this line.*

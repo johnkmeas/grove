@@ -86,7 +86,7 @@ All essential page types render correctly using Skeleton-based sections.
 - [x] Create `.performance-budget.json` aligned with Shopify Theme Store minimums
 - [x] Reference performance budget in root `CLAUDE.md`
 - [x] Configure Stylelint rule to fail on raw hex/pixel values
-- [ ] Validate CSS variable names at build time — warn on references to unknown variables
+- [x] Validate CSS variable names at build time — warn on references to unknown variables (see ADR-010)
 - [ ] Add Shopify Lighthouse CI GitHub Action for automated perf/a11y checking
 - [ ] Add a11y section to component spec template
 
