@@ -6,16 +6,14 @@
     "seo": 90
   },
   "bundleSize": {
-    "totalJSMinified": "16kb",
-    "totalCSS": "50kb",
-    "perComponentJS": "15kb",
-    "perBlockCSS": "2kb"
+    "totalJSMinified": "50kb",
+    "totalCSS": "100kb",
+    "perComponentJS": "30kb",
+    "perBlockCSS": "5kb"
   },
   "notes": {
-    "source": "Shopify Theme Store requirements (May 2025)",
-    "performanceNote": "60+ minimum averaged across product, collection, and home pages (desktop + mobile)",
-    "accessibilityNote": "90+ minimum averaged across product, collection, and home pages (desktop + mobile)",
-    "jsNote": "16KB minified bundle maximum per Shopify Theme Store requirement",
-    "readability": "All compiled output must be human-readable (no minification) for theme store compliance"
+    "performanceNote": "Lighthouse 60+ as a baseline; target higher for client themes",
+    "accessibilityNote": "90+ minimum — non-negotiable for production themes",
+    "readability": "Compiled output is human-readable by default (minify: false in Vite). Enable minification per-project if needed."
   }
 }

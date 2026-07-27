@@ -1,74 +1,93 @@
-# Grove — Agent Context
+# Horizon Vite — Agent Context
 
-**Stack:** Shopify Skeleton theme base, Liquid, vanilla JS, nested BEM SCSS, Vue 3 islands, Shopify CLI, Vite
+**Stack:** Shopify Horizon theme base, Liquid, vanilla JS, nested BEM SCSS, Vue 3 islands, Shopify CLI, Vite
 
-**What Grove is:** A Shopify Theme Store theme built on the official [Skeleton theme](https://github.com/Shopify/skeleton-theme). All visual design comes from merchant-edited settings and presets in the theme editor — never hardcoded. The Vite build pipeline compiles `src/` → `shopify/`.
+**What this is:** A Vite-powered dev workflow for building custom Shopify themes on top of the Horizon theme boilerplate. The Vite build pipeline compiles `src/` into `shopify/`. This is for custom merchant themes — not Theme Store submissions.
 
 ## Rules
 
 - **Work in `src/` only.** Never edit `shopify/` — it is a build artifact.
-- **Built on Skeleton theme.** Dawn/Horizon patterns are NOT eligible for Theme Store. Do not introduce them.
-- **Design is merchant-controlled.** All visual customisation (colours, fonts, spacing, layout) comes from theme settings and presets. Never hardcode visual design choices.
-- **All design values from CSS custom properties.** Use `var(--spacing-*)`, `var(--type-*)`, `var(--motion-*)`, `var(--radius-*)` from `css-variables.liquid`. Never hardcode spacing, type sizes, or motion values in SCSS.
-- **All merchant-facing strings via `{{ 'key' | t }}`.** Never hardcode text.
+- **Based on Horizon theme.** Horizon and Dawn patterns are valid. Use them freely.
 - **BEM always nested.** Never write `.block__element` as a top-level selector.
 - **Max snippet nesting: 1 level** per component.
 - **Vue only** in components marked `"js": "vue"` in `registry.json`.
 - **No `import`/`export` in component JS.** Shopify's `{% javascript %}` wraps code in an IIFE. Component JS must be self-contained and self-initializing.
-- **All compiled output must be human-readable.** No minification — theme store requirement. SCSS: `expanded`, Vite: `minify: false`.
-- `src/templates/` and `src/config/` are **read-only** unless you are the `template-composer` or `theme-settings` agent.
+- **Schema labels are plain strings.** No translation key requirements — use human-readable labels directly (e.g. `"label": "Heading"` not `"label": "t:sections.heading.label"`).
 - **Theme blocks use `block.settings`**, not `section.settings`. Blocks have no access to section scope.
-- **Snippets in blocks must be fully parameterized** — pass all values explicitly via `{% render %}`. No reliance on ambient variables.
-- **New sections SHOULD use `{ "type": "@theme" }` blocks.** Inline section blocks are deprecated for new development.
-- **Block BEM prefix: `grove-`** — e.g. `.grove-heading`, `.grove-button`. Avoids collision with section classes.
-- **No app-dependent features.** Wishlists, scheduling, discount codes, Instagram feeds etc. are not allowed (theme store rule).
-- **No deceptive patterns.** No fake countdowns, fake stock levels, fake viewer counts (theme store rule).
-- **Navigation and product form must work without JavaScript** (theme store rule).
-- **Payment icons must use `enabled_payment_types`** + `payment_type_svg_tag` filter (theme store rule).
+- **Snippets in blocks must be fully parameterized** — pass all values explicitly via `{% render %}`.
+- **New sections SHOULD use `{ "type": "@theme" }` blocks.** Inline section blocks are fine but theme blocks are preferred.
+
+## Project Structure
+
+```
+src/
+  components/         # Sections — each dir compiles to shopify/sections/*.liquid
+    [name]/
+      index.liquid        # Markup with <!-- SCHEMA_INJECT --> placeholder
+      [name].schema.json  # Settings schema (plain string labels)
+      [name].scss         # Scoped BEM styles
+      [name].js           # Self-contained JS (or .vue for reactive)
+    _shared/              # Shared snippets → shopify/snippets/
+  blocks/             # Theme blocks → shopify/blocks/*.liquid
+  snippets/           # Standalone snippets → shopify/snippets/
+  layout/             # Layout files → shopify/layout/
+  templates/          # JSON/Liquid templates → shopify/templates/
+  config/             # Theme config → shopify/config/
+  locales/            # Locale files → shopify/locales/
+  section-groups/     # Section groups → shopify/sections/*.json
+  assets/             # Static assets → shopify/assets/
+  fixtures/           # Mock data for local Liquid rendering
+  theme.js            # Global JS entry (imports theme.scss)
+  theme.scss          # Global styles
+```
 
 ## Before Starting Any Task
 
 1. Read `DECISIONS.md` — check before any structural change.
-2. Read `KNOWN_AGENT_FAILURES.md` — avoid known failure patterns.
-3. Check `src/components/registry.json` — see what exists before creating.
-4. Check `src/blocks/registry.json` — see what blocks exist before creating.
-
-## Performance Budget
-
-See `.performance-budget.json`. Targets aligned with Shopify Theme Store requirements:
-- Lighthouse performance: **60+ minimum** (averaged across product, collection, home pages)
-- Lighthouse accessibility: **90+ minimum** (same pages)
-- Minified JS bundle: **16KB or less**
-- All compiled CSS/JS must be human-readable (no minification)
-
-## Theme Store Key Requirements
-
-- Built on Skeleton theme (Dawn/Horizon NOT eligible)
-- Max 5 presets per theme
-- `settings_data.json` max 1.5MB
-- `/listings` folder required in theme zip for multi-preset themes
-- Custom Liquid section + Custom Liquid blocks mandatory
-- App blocks (`@app`) in product and featured-product sections
-- Follow on Shop button, Shop Pay Installments, unit pricing required
-- No external marketplace distribution (Theme Store exclusive)
-- Support contact form + documentation link required
-
-## Agent Roles
-
-| Agent | Purpose |
-|---|---|
-| `component-builder` | Create and edit components in `src/components/[target]/` |
-| `block-builder` | Create and edit theme blocks in `src/blocks/[target]/` |
-| `schema-editor` | Edit `*.schema.json` only |
-| `template-composer` | Compose page templates in `src/templates/` |
-| `theme-settings` | Edit global settings in `src/config/` |
-| `perf-auditor` | Review and flag performance/a11y issues |
+2. Check `src/components/registry.json` — see what exists before creating.
+3. Check `src/blocks/registry.json` — see what blocks exist before creating.
 
 ## Build Commands
 
 ```
 pnpm build                    # compile all
+pnpm dev                      # watch build + shopify theme dev
 pnpm validate-schemas         # lint all *.schema.json
 pnpm new-component [name]     # scaffold a new section component
 pnpm new-component [name] --type block  # scaffold a new theme block
+pnpm new-component [name] --vue        # scaffold with Vue island
+pnpm lint                     # run all linters
+pnpm render [name] --fixture product   # dry-render a component
 ```
+
+## How the Build Works
+
+The Vite plugin (`plugins/vite-plugin-shopify-liquid.js`) runs after Vite writes its assets:
+
+1. For each `src/components/[name]/index.liquid`:
+   - Compiles `[name].scss` → injects as `{% stylesheet %}`
+   - Reads `[name].js` → injects as `{% javascript %}`
+   - Reads `[name].schema.json` → strips `_version` → injects as `{% schema %}`
+   - Writes result to `shopify/sections/[name].liquid`
+
+2. Same process for `src/blocks/[name]/index.liquid` → `shopify/blocks/`
+
+3. Copies snippets, layout, templates, config, locales, section-groups, and assets directly.
+
+Vue `.vue` files are bundled by Vite as ES modules → `shopify/assets/`.
+
+## Component JS Rules
+
+Component JS is injected into `{% javascript %}` tags. Shopify wraps this in an IIFE, so:
+
+- **No `import` statements** — code must be self-contained
+- **No `export` statements** — IIFE scope makes exports a syntax error
+- **Self-initializing** — use `document.querySelectorAll('.block').forEach(...)` at the bottom
+- If a component needs module imports, use Vue (`"js": "vue"` in registry)
+
+## Performance Budget
+
+See `.performance-budget.json`. Targets:
+- Lighthouse performance: **60+ minimum**
+- Lighthouse accessibility: **90+ minimum**
+- Compiled output is human-readable by default (no minification)

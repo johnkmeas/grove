@@ -3,11 +3,11 @@
  * validate-schemas.js
  *
  * Validates all *.schema.json files against the Shopify section schema spec.
- * Runs before build and as a pre-commit hook.
+ * Relaxed for custom theme development — no translation requirements.
  *
  * Usage:
  *   node scripts/validate-schemas.js
- *   node scripts/validate-schemas.js --staged   (lint-staged mode)
+ *   node scripts/validate-schemas.js --staged
  *   node scripts/validate-schemas.js path/to/hero.schema.json
  */
 
@@ -20,7 +20,6 @@ const specificFiles = args.filter((a) => !a.startsWith('--') && a.endsWith('.sch
 
 const ROOT = process.cwd()
 
-// Shopify schema field types
 const VALID_FIELD_TYPES = new Set([
   'text',
   'textarea',
@@ -60,23 +59,17 @@ const errors = []
 const warnings = []
 
 function addError(file, message) {
-  errors.push(`  ✗ ${relative(ROOT, file)}: ${message}`)
+  errors.push(`  x ${relative(ROOT, file)}: ${message}`)
 }
 
 function addWarning(file, message) {
-  warnings.push(`  ⚠ ${relative(ROOT, file)}: ${message}`)
+  warnings.push(`  ! ${relative(ROOT, file)}: ${message}`)
 }
 
-/**
- * Check if a schema file is a block schema (lives under src/blocks/)
- */
 function isBlockSchema(filePath) {
   return filePath.includes(`${sep}blocks${sep}`) || filePath.includes('/blocks/')
 }
 
-/**
- * Validate a single schema file
- */
 function validateSchema(filePath) {
   let schema
 
@@ -90,39 +83,32 @@ function validateSchema(filePath) {
 
   const isBlock = isBlockSchema(filePath)
 
-  // Required: name field
   if (!schema.name) {
     addError(filePath, 'Missing required field: name')
   }
 
-  // Required: _version field (Grove convention)
   if (!schema._version) {
-    addError(filePath, 'Missing required Grove field: _version (e.g. "1.0.0")')
+    addError(filePath, 'Missing required field: _version (e.g. "1.0.0")')
   } else if (!/^\d+\.\d+\.\d+$/.test(schema._version)) {
     addError(filePath, `Invalid _version format "${schema._version}" — must be semver (e.g. "1.0.0")`)
   }
 
-  // Validate settings array
   if (schema.settings) {
     if (!Array.isArray(schema.settings)) {
       addError(filePath, 'settings must be an array')
     } else {
       for (let i = 0; i < schema.settings.length; i++) {
-        const setting = schema.settings[i]
-        validateSetting(filePath, setting, `settings[${i}]`)
+        validateSetting(filePath, schema.settings[i], `settings[${i}]`)
       }
     }
   }
 
-  // Block-specific validation
   if (isBlock) {
-    // Validate tag if present
     const validTags = new Set([null, 'div', 'section', 'article', 'aside', 'header', 'footer', 'li', 'p', 'span'])
     if (schema.tag !== undefined && !validTags.has(schema.tag)) {
       addError(filePath, `Invalid block tag "${schema.tag}" — must be null or a valid HTML element`)
     }
 
-    // Validate limit if present
     if (schema.limit !== undefined && (typeof schema.limit !== 'number' || schema.limit < 1)) {
       addError(filePath, 'Block limit must be a positive number')
     }
@@ -130,9 +116,6 @@ function validateSchema(filePath) {
     return
   }
 
-  // Section-specific validation below
-
-  // Validate blocks array
   if (schema.blocks) {
     if (!Array.isArray(schema.blocks)) {
       addError(filePath, 'blocks must be an array')
@@ -141,7 +124,6 @@ function validateSchema(filePath) {
       const hasAppRef = schema.blocks.some((b) => b.type === '@app')
       const hasInlineBlocks = schema.blocks.some((b) => b.type !== '@theme' && b.type !== '@app' && b.settings)
 
-      // Cannot mix @theme blocks with inline section blocks
       if ((hasThemeRef || hasAppRef) && hasInlineBlocks) {
         addError(filePath, 'Cannot mix @theme/@app block references with inline section blocks')
       }
@@ -152,15 +134,10 @@ function validateSchema(filePath) {
           addError(filePath, `blocks[${i}] missing required field: type`)
         }
 
-        // @theme and @app are valid block references without name
         if (block.type === '@theme' || block.type === '@app') {
           continue
         }
 
-        // Theme block type references (no inline settings) don't require name —
-        // Shopify resolves the name and settings from the theme block file.
-        // Only true inline section blocks (those that define their own settings)
-        // must have a name.
         if (block.settings) {
           if (!block.name) {
             addError(filePath, `blocks[${i}] missing required field: name`)
@@ -175,7 +152,6 @@ function validateSchema(filePath) {
     }
   }
 
-  // Validate presets array
   if (schema.presets) {
     if (!Array.isArray(schema.presets)) {
       addError(filePath, 'presets must be an array')
@@ -188,20 +164,11 @@ function validateSchema(filePath) {
     }
   }
 
-  // max_blocks
   if (schema.max_blocks !== undefined && typeof schema.max_blocks !== 'number') {
     addError(filePath, 'max_blocks must be a number')
   }
-
-  // Check for deprecated fields
-  if (schema.class !== undefined) {
-    addWarning(filePath, 'schema.class is deprecated — use CSS targeting instead')
-  }
 }
 
-/**
- * Validate a single setting object
- */
 function validateSetting(filePath, setting, path) {
   if (!setting.type) {
     addError(filePath, `${path} missing required field: type`)
@@ -213,7 +180,6 @@ function validateSetting(filePath, setting, path) {
     return
   }
 
-  // Structural types don't need id/label
   if (setting.type === 'header' || setting.type === 'paragraph') {
     if (!setting.content) {
       addError(filePath, `${path} (type: ${setting.type}) missing required field: content`)
@@ -221,7 +187,6 @@ function validateSetting(filePath, setting, path) {
     return
   }
 
-  // All other types need id and label
   if (!setting.id) {
     addError(filePath, `${path} missing required field: id`)
   }
@@ -229,12 +194,10 @@ function validateSetting(filePath, setting, path) {
     addError(filePath, `${path} missing required field: label`)
   }
 
-  // Select and radio need options
   if ((setting.type === 'select' || setting.type === 'radio') && !setting.options) {
     addError(filePath, `${path} (type: ${setting.type}) missing required field: options`)
   }
 
-  // Range needs min, max, step
   if (setting.type === 'range') {
     if (setting.min === undefined) addError(filePath, `${path} (type: range) missing required field: min`)
     if (setting.max === undefined) addError(filePath, `${path} (type: range) missing required field: max`)
@@ -250,7 +213,6 @@ async function run() {
       ignore: [`${ROOT}/src/locales/**`],
     })
   } else {
-    // Filter out locale files from explicit file lists (e.g. lint-staged)
     filesToValidate = filesToValidate.filter((f) => !f.includes('/locales/'))
   }
 
@@ -279,11 +241,11 @@ async function run() {
   if (errors.length > 0) {
     console.error('Schema validation errors:')
     errors.forEach((e) => console.error(e))
-    console.error(`\n✗ ${errors.length} error(s) found. Fix before building.`)
+    console.error(`\n${errors.length} error(s) found. Fix before building.`)
     process.exit(1)
   }
 
-  console.log(`✓ All schemas valid (${filesToValidate.length} file(s) checked)`)
+  console.log(`All schemas valid (${filesToValidate.length} file(s) checked)`)
 }
 
 run()

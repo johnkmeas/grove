@@ -39,37 +39,20 @@ jobs:
         id: version
         run: echo "version=${GITHUB_REF#refs/heads/release/}" >> $GITHUB_OUTPUT
 
-      - name: Build default preset
+      - name: Build
         run: pnpm build
 
-      - name: Theme Check
-        run: npx @shopify/theme-check-node shopify/ --config .shopify-theme-check.yml
-
-      - name: Package default theme
-        env:
-          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+      - name: Package theme
         run: |
           npx @shopify/cli theme package \
             --path shopify/
-          mv *.zip grove-default-${{ steps.version.outputs.version }}.zip
-
-      - name: Build minimal preset
-        run: pnpm build --mode minimal
-          npx @shopify/cli theme package --path shopify/
-          mv *.zip grove-minimal-${{ steps.version.outputs.version }}.zip
-
-      - name: Build bold preset
-        run: pnpm build --mode bold
-          npx @shopify/cli theme package --path shopify/
-          mv *.zip grove-bold-${{ steps.version.outputs.version }}.zip
+          mv *.zip theme-${{ steps.version.outputs.version }}.zip
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.version }}
-          name: Grove v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
           generate_release_notes: true
           files: |
-            grove-default-${{ steps.version.outputs.version }}.zip
-            grove-minimal-${{ steps.version.outputs.version }}.zip
-            grove-bold-${{ steps.version.outputs.version }}.zip
+            theme-${{ steps.version.outputs.version }}.zip

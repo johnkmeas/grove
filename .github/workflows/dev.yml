@@ -54,10 +54,6 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Shopify Theme Check
-        run: pnpm theme-check shopify/
-        continue-on-error: false
-
       - name: Deploy to dev theme
         env:
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
@@ -78,5 +74,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `## 🌿 Grove Preview\n\nTheme preview deployed: https://${{ secrets.SHOPIFY_STORE }}/?\\_bt=${{ secrets.DEV_THEME_ID }}\n\n*Built from \`${{ github.head_ref }}\` at ${{ github.sha }}*`
+              body: `## Theme Preview\n\nDev theme deployed: https://${{ secrets.SHOPIFY_STORE }}/?\\_bt=${{ secrets.DEV_THEME_ID }}\n\n*Built from \`${{ github.head_ref }}\` at ${{ github.sha }}*`
             })

@@ -1,6 +1,5 @@
 # Shopify Theme Check configuration
 # Runs post-build on shopify/ directory
-# https://shopify.dev/docs/storefronts/themes/tools/theme-check
 
 root: ./shopify
 
@@ -50,13 +49,12 @@ checks:
     enabled: true
     severity: error
 
+  # Translation checks disabled — custom themes use plain string labels
   ValidHTMLTranslation:
-    enabled: true
-    severity: error
+    enabled: false
 
   TranslationKeyExists:
-    enabled: true
-    severity: error
+    enabled: false
 
   MissingRequiredTemplateFiles:
     enabled: true

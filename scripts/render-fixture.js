@@ -87,9 +87,9 @@ const context = {
 
   // Mock Shopify globals
   shop: {
-    name: 'Grove Demo Store',
-    url: 'https://grove-demo.myshopify.com',
-    description: 'Grove Framework Demo Store',
+    name: 'Dev Store',
+    url: 'https://dev-store.myshopify.com',
+    description: 'Development Store',
     currency: 'USD',
     money_format: '${{amount}}',
   },
@@ -206,7 +206,7 @@ async function render() {
     const html = await engine.parseAndRender(liquidContent, context)
 
     console.log(`\n${'='.repeat(60)}`)
-    console.log(`Grove Render: ${componentName} (fixture: ${fixtureName})`)
+    console.log(`Render: ${componentName} (fixture: ${fixtureName})`)
     console.log('='.repeat(60))
     console.log(html)
     console.log('='.repeat(60))
